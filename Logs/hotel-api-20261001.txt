@@ -1,0 +1,1290 @@
+2026-10-01 09:15:24.412 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 09:15:24.697 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 09:15:24.705 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 09:15:24.709 +03:00 [INF] Hosting environment: Development
+2026-10-01 09:15:24.710 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 09:15:28.263 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger - null null
+2026-10-01 09:15:28.508 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger - 301 0 null 247.8172ms
+2026-10-01 09:15:28.552 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 09:15:28.760 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 209.8535ms
+2026-10-01 09:15:29.092 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 09:15:29.608 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 515.9274ms
+2026-10-01 11:00:23.197 +03:00 [INF] Application is shutting down...
+2026-10-01 11:03:50.903 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-10-01 11:03:50.969 +03:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-10-01 11:03:50.998 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-10-01 11:04:51.655 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-10-01 11:04:54.838 +03:00 [INF] Executed DbCommand (3,092ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [HotelManagementDb] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+END;
+2026-10-01 11:04:54.950 +03:00 [INF] Executed DbCommand (110ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+DROP DATABASE [HotelManagementDb];
+2026-10-01 11:09:08.718 +03:00 [INF] Executed DbCommand (327ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [HotelManagementDb];
+2026-10-01 11:09:08.926 +03:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [HotelManagementDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2026-10-01 11:09:08.982 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-10-01 11:09:08.998 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-10-01 11:09:09.197 +03:00 [INF] Executed DbCommand (191ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2026-10-01 11:09:09.303 +03:00 [INF] Executed DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2026-10-01 11:09:09.318 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-10-01 11:09:09.323 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-10-01 11:09:09.347 +03:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-10-01 11:09:09.367 +03:00 [INF] Applying migration '20261001080826_InitialGuid'.
+2026-10-01 11:09:09.434 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] uniqueidentifier NOT NULL,
+    [Username] nvarchar(50) NOT NULL,
+    [Email] nvarchar(100) NOT NULL,
+    [PasswordHash] nvarchar(max) NOT NULL,
+    [Role] nvarchar(max) NOT NULL,
+    [Balance] decimal(18,2) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id])
+);
+2026-10-01 11:09:09.454 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Hotels] (
+    [Id] uniqueidentifier NOT NULL,
+    [OwnerId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(150) NOT NULL,
+    [Address] nvarchar(max) NOT NULL,
+    [City] nvarchar(100) NOT NULL,
+    [Rating] decimal(3,2) NOT NULL,
+    [Description] nvarchar(max) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_Hotels] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Hotels_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-10-01 11:09:09.477 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Rooms] (
+    [Id] uniqueidentifier NOT NULL,
+    [HotelId] uniqueidentifier NOT NULL,
+    [RoomNumber] nvarchar(max) NOT NULL,
+    [RoomType] nvarchar(max) NOT NULL,
+    [Capacity] int NOT NULL,
+    [PricePerNight] decimal(18,2) NOT NULL,
+    [IsAvailable] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_Rooms] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Rooms_Hotels_HotelId] FOREIGN KEY ([HotelId]) REFERENCES [Hotels] ([Id]) ON DELETE NO ACTION
+);
+2026-10-01 11:09:09.496 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Reservations] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [RoomId] uniqueidentifier NOT NULL,
+    [CheckInDate] datetime2 NOT NULL,
+    [CheckOutDate] datetime2 NOT NULL,
+    [GuestCount] int NOT NULL,
+    [TotalPrice] decimal(18,2) NOT NULL,
+    [PenaltyFee] decimal(18,2) NOT NULL,
+    [Status] nvarchar(max) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_Reservations] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Reservations_Rooms_RoomId] FOREIGN KEY ([RoomId]) REFERENCES [Rooms] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Reservations_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-10-01 11:09:09.516 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Payments] (
+    [Id] uniqueidentifier NOT NULL,
+    [ReservationId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [TransactionType] nvarchar(max) NOT NULL,
+    [Status] nvarchar(max) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_Payments] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Payments_Reservations_ReservationId] FOREIGN KEY ([ReservationId]) REFERENCES [Reservations] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Payments_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-10-01 11:09:09.539 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Hotels_OwnerId] ON [Hotels] ([OwnerId]);
+2026-10-01 11:09:09.552 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Payments_ReservationId] ON [Payments] ([ReservationId]);
+2026-10-01 11:09:09.563 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Payments_UserId] ON [Payments] ([UserId]);
+2026-10-01 11:09:09.573 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Reservations_RoomId] ON [Reservations] ([RoomId]);
+2026-10-01 11:09:09.582 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Reservations_UserId] ON [Reservations] ([UserId]);
+2026-10-01 11:09:09.591 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Rooms_HotelId] ON [Rooms] ([HotelId]);
+2026-10-01 11:09:09.615 +03:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20261001080826_InitialGuid', N'10.0.12');
+2026-10-01 11:09:09.631 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2026-10-01 11:10:05.911 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 11:10:06.039 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 11:10:06.041 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 11:10:06.042 +03:00 [INF] Hosting environment: Development
+2026-10-01 11:10:06.043 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 11:10:28.411 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 11:10:29.003 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 598.4279ms
+2026-10-01 11:10:30.190 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 11:10:30.352 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 163.8705ms
+2026-10-01 11:10:30.496 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 11:10:30.606 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 110.2465ms
+2026-10-01 11:11:03.729 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/register - application/json 108
+2026-10-01 11:11:03.773 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 11:11:03.850 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 11:11:03.885 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(HotelManagementApi.DTOs.RegisterDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 11:11:04.093 +03:00 [INF] Yeni kullanıcı kayıt işlemi başlatıldı. Username: selenay, Role: "Customer"
+2026-10-01 11:11:06.162 +03:00 [INF] Executed DbCommand (86ms) [Parameters=[@registerDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = @registerDto_Email) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 11:11:06.584 +03:00 [INF] Executed DbCommand (20ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (Size = 100), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Users] ([Id], [Balance], [CreatedAt], [Email], [PasswordHash], [Role], [Username])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 11:11:06.606 +03:00 [INF] Kullanıcı kaydı başarıyla tamamlandı. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Username: selenay, Role: "Customer"
+2026-10-01 11:11:06.619 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 11:11:06.638 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi) in 2743.5105ms
+2026-10-01 11:11:06.641 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 11:11:06.654 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/register - 200 null application/json; charset=utf-8 2924.6224ms
+2026-10-01 11:11:43.478 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 11:11:43.499 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 21.0416ms
+2026-10-01 11:11:43.780 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 11:11:43.833 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 52.9862ms
+2026-10-01 11:12:05.984 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 61
+2026-10-01 11:12:06.017 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 11:12:06.052 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 11:12:06.081 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: selenay@gmail.com
+2026-10-01 11:12:06.254 +03:00 [INF] Executed DbCommand (21ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email
+2026-10-01 11:12:06.452 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Username: selenay, Role: "Customer"
+2026-10-01 11:12:06.456 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 11:12:06.462 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 404.4751ms
+2026-10-01 11:12:06.466 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 11:12:06.470 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 485.0036ms
+2026-10-01 11:14:33.153 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/api/Payments/my-payments - null null
+2026-10-01 11:14:33.237 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.PaymentsController.GetMyPayments (HotelManagementApi)'
+2026-10-01 11:14:33.252 +03:00 [INF] Route matched with {action = "GetMyPayments", controller = "Payments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMyPayments() on controller HotelManagementApi.Controllers.PaymentsController (HotelManagementApi).
+2026-10-01 11:14:33.277 +03:00 [INF] Kullanıcının kendi ödeme geçmişi görüntülenmek isteniyor.
+2026-10-01 11:14:33.460 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[ReservationId], [p].[Amount], [p].[TransactionType], [p].[Status], [p].[CreatedAt]
+FROM [Payments] AS [p]
+WHERE [p].[UserId] = @userId
+ORDER BY [p].[CreatedAt] DESC
+2026-10-01 11:14:33.464 +03:00 [INF] Kullanıcının ödeme geçmişi başarıyla listelendi. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Ödeme sayısı: 0
+2026-10-01 11:14:33.467 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[<>f__AnonymousType5`6[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.TransactionType, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[HotelManagementApi.Models.PaymentStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-10-01 11:14:33.498 +03:00 [INF] Executed action HotelManagementApi.Controllers.PaymentsController.GetMyPayments (HotelManagementApi) in 237.9643ms
+2026-10-01 11:14:33.501 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.PaymentsController.GetMyPayments (HotelManagementApi)'
+2026-10-01 11:14:33.505 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/api/Payments/my-payments - 200 null application/json; charset=utf-8 351.2055ms
+2026-10-01 11:15:21.736 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/register - application/json 106
+2026-10-01 11:15:21.762 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 11:15:21.767 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(HotelManagementApi.DTOs.RegisterDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 11:15:21.781 +03:00 [INF] Yeni kullanıcı kayıt işlemi başlatıldı. Username: begum, Role: "HotelOwner"
+2026-10-01 11:15:21.812 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[@registerDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = @registerDto_Email) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 11:15:21.947 +03:00 [INF] Executed DbCommand (18ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (Size = 100), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Users] ([Id], [Balance], [CreatedAt], [Email], [PasswordHash], [Role], [Username])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 11:15:21.951 +03:00 [INF] Kullanıcı kaydı başarıyla tamamlandı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 11:15:21.953 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 11:15:21.956 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi) in 180.0334ms
+2026-10-01 11:15:21.960 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 11:15:21.963 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/register - 200 null application/json; charset=utf-8 226.1568ms
+2026-10-01 11:15:36.905 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 11:15:36.916 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 11:15:36.922 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 11:15:36.938 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 11:15:36.960 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email
+2026-10-01 11:15:37.101 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 11:15:37.103 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 11:15:37.105 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 168.2495ms
+2026-10-01 11:15:37.106 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 11:15:37.108 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 203.2854ms
+2026-10-01 11:16:40.515 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Hotels - application/json 130
+2026-10-01 11:16:40.530 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.HotelsController.CreateHotel (HotelManagementApi)'
+2026-10-01 11:16:40.556 +03:00 [INF] Route matched with {action = "CreateHotel", controller = "Hotels"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Hotel]] CreateHotel(HotelManagementApi.DTOs.CreateHotelDto) on controller HotelManagementApi.Controllers.HotelsController (HotelManagementApi).
+2026-10-01 11:16:40.593 +03:00 [INF] Yeni otel oluşturma işlemi başlatıldı. HotelName: Palma Hotel
+2026-10-01 11:16:40.723 +03:00 [INF] Executed DbCommand (25ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 4000), @p2='?' (Size = 100), @p3='?' (DbType = DateTime2), @p4='?' (Size = 4000), @p5='?' (Size = 150), @p6='?' (DbType = Guid), @p7='?' (Precision = 3) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Hotels] ([Id], [Address], [City], [CreatedAt], [Description], [Name], [OwnerId], [Rating])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 11:16:40.729 +03:00 [INF] Otel başarıyla oluşturuldu. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", HotelName: Palma Hotel, OwnerId: "2a560825-253d-4452-a30f-f60c9aa5454a"
+2026-10-01 11:16:40.738 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Hotel'.
+2026-10-01 11:16:40.834 +03:00 [INF] Executed action HotelManagementApi.Controllers.HotelsController.CreateHotel (HotelManagementApi) in 270.3774ms
+2026-10-01 11:16:40.836 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.HotelsController.CreateHotel (HotelManagementApi)'
+2026-10-01 11:16:40.838 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Hotels - 201 null application/json; charset=utf-8 323.5883ms
+2026-10-01 11:18:42.222 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 169
+2026-10-01 11:18:42.254 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:18:42.266 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 11:18:42.304 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "3fa85f64-5717-4562-b3fc-2c963f66afa6", RoomNumber: 101
+2026-10-01 11:18:42.341 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId
+2026-10-01 11:18:42.349 +03:00 [WRN] Oda oluşturma başarısız. Belirtilen otel bulunamadı. HotelId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+2026-10-01 11:18:42.356 +03:00 [INF] Executing BadRequestObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 11:18:42.361 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 87.3218ms
+2026-10-01 11:18:42.366 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:18:42.374 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 400 null application/json; charset=utf-8 151.3119ms
+2026-10-01 11:19:01.620 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 169
+2026-10-01 11:19:01.632 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:19:01.638 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 11:19:01.648 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", RoomNumber: 101
+2026-10-01 11:19:01.663 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId
+2026-10-01 11:19:01.787 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Size = 4000), @p7='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Rooms] ([Id], [Capacity], [CreatedAt], [HotelId], [IsAvailable], [PricePerNight], [RoomNumber], [RoomType])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 11:19:01.793 +03:00 [INF] Oda başarıyla oluşturuldu. RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74", HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", RoomNumber: 101
+2026-10-01 11:19:01.796 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Room'.
+2026-10-01 11:19:01.807 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 160.8873ms
+2026-10-01 11:19:01.810 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:19:01.818 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 201 null application/json; charset=utf-8 198.3957ms
+2026-10-01 11:19:28.650 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 167
+2026-10-01 11:19:28.673 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:19:28.679 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 11:19:28.688 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", RoomNumber: 201
+2026-10-01 11:19:28.709 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId
+2026-10-01 11:19:28.731 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Size = 4000), @p7='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Rooms] ([Id], [Capacity], [CreatedAt], [HotelId], [IsAvailable], [PricePerNight], [RoomNumber], [RoomType])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 11:19:28.741 +03:00 [INF] Oda başarıyla oluşturuldu. RoomId: "2ff73c40-005b-4fda-8054-022d472de550", HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", RoomNumber: 201
+2026-10-01 11:19:28.749 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Room'.
+2026-10-01 11:19:28.756 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 70.0862ms
+2026-10-01 11:19:28.763 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:19:28.769 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 201 null application/json; charset=utf-8 119.4765ms
+2026-10-01 11:19:47.714 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 166
+2026-10-01 11:19:47.737 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:19:47.740 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 11:19:47.749 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", RoomNumber: 201
+2026-10-01 11:19:47.758 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId
+2026-10-01 11:19:47.772 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Size = 4000), @p7='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Rooms] ([Id], [Capacity], [CreatedAt], [HotelId], [IsAvailable], [PricePerNight], [RoomNumber], [RoomType])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 11:19:47.782 +03:00 [INF] Oda başarıyla oluşturuldu. RoomId: "595a0274-c044-498f-887a-36bc9bf84d83", HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", RoomNumber: 201
+2026-10-01 11:19:47.790 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Room'.
+2026-10-01 11:19:47.799 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 51.8058ms
+2026-10-01 11:19:47.805 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 11:19:47.812 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 201 null application/json; charset=utf-8 97.0157ms
+2026-10-01 11:28:47.978 +03:00 [INF] Application is shutting down...
+2026-10-01 11:52:48.840 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-10-01 11:52:48.882 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-10-01 11:52:48.922 +03:00 [INF] Executed DbCommand (36ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2026-10-01 11:52:49.006 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2026-10-01 11:52:49.020 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-10-01 11:52:49.025 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-10-01 11:52:49.046 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-10-01 11:52:49.062 +03:00 [INF] Applying migration '20261001085233_AddSoftDelete'.
+2026-10-01 11:52:49.132 +03:00 [INF] Executed DbCommand (53ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-10-01 11:52:49.171 +03:00 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Rooms] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-10-01 11:52:49.185 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Reservations] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-10-01 11:52:49.199 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Payments] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-10-01 11:52:49.230 +03:00 [INF] Executed DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Hotels] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-10-01 11:52:49.261 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20261001085233_AddSoftDelete', N'10.0.12');
+2026-10-01 11:52:49.284 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2026-10-01 11:54:37.388 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 11:54:37.471 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 11:54:37.474 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 11:54:37.475 +03:00 [INF] Hosting environment: Development
+2026-10-01 11:54:37.476 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 11:54:40.421 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 11:54:40.571 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 153.5744ms
+2026-10-01 11:54:40.746 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 11:54:41.156 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 412.1159ms
+2026-10-01 13:06:40.173 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/register - application/json 100
+2026-10-01 13:06:40.200 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 13:06:40.307 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 13:06:40.379 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(HotelManagementApi.DTOs.RegisterDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:06:40.842 +03:00 [INF] Yeni kullanıcı kayıt işlemi başlatıldı. Username: ece, Role: "Customer"
+2026-10-01 13:06:43.198 +03:00 [INF] Executed DbCommand (55ms) [Parameters=[@registerDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = @registerDto_Email) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 13:06:43.584 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (Size = 100), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Users] ([Id], [Balance], [CreatedAt], [Email], [PasswordHash], [Role], [Username])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 13:06:43.623 +03:00 [INF] Kullanıcı kaydı başarıyla tamamlandı. UserId: "2c1dfe7c-2ed6-4c05-890d-5377466f9502", Username: ece, Role: "Customer"
+2026-10-01 13:06:43.634 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:06:43.660 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi) in 3265.7695ms
+2026-10-01 13:06:43.663 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 13:06:43.677 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/register - 200 null application/json; charset=utf-8 3504.4866ms
+2026-10-01 13:07:07.106 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 57
+2026-10-01 13:07:07.119 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:07:07.137 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:07:07.151 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: ece@gmail.com
+2026-10-01 13:07:07.278 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:07:07.429 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2c1dfe7c-2ed6-4c05-890d-5377466f9502", Username: ece, Role: "Customer"
+2026-10-01 13:07:07.435 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:07:07.447 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 307.5748ms
+2026-10-01 13:07:07.452 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:07:07.454 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 347.4732ms
+2026-10-01 13:07:58.166 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Users/2C1DFE7C-2ED6-4C05-890D-5377466F9502 - null null
+2026-10-01 13:07:58.225 +03:00 [INF] Failed to validate the token.
+System.ArgumentException: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+ ---> System.FormatException: IDX10400: Unable to decode: '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64url encoded string.
+   at Microsoft.IdentityModel.Tokens.Base64UrlEncoder.Decode(ReadOnlySpan`1 strSpan, Span`1 output)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.CreateClaimSet(ReadOnlySpan`1 strSpan, Int32 startIndex, Int32 length, Boolean createHeaderClaimSet)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString, TryReadJwtClaim tryReadJwtClaim)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2026-10-01 13:07:58.279 +03:00 [INF] Bearer was not authenticated. Failure message: IDX14102: Unable to decode the header '[PII of type 'Microsoft.IdentityModel.Logging.SecurityArtifact' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]' as Base64Url encoded string.
+2026-10-01 13:07:58.297 +03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin)
+2026-10-01 13:07:58.322 +03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-10-01 13:07:58.326 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Users/2C1DFE7C-2ED6-4C05-890D-5377466F9502 - 401 0 null 160.5093ms
+2026-10-01 13:12:27.995 +03:00 [INF] Application is shutting down...
+2026-10-01 13:12:38.846 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 13:12:38.935 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 13:12:38.937 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 13:12:38.938 +03:00 [INF] Hosting environment: Development
+2026-10-01 13:12:38.938 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 13:14:02.202 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 13:14:02.343 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 142.9369ms
+2026-10-01 13:14:02.524 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 13:14:02.790 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 267.5612ms
+2026-10-01 13:14:20.153 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 57
+2026-10-01 13:14:20.171 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 13:14:20.228 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:14:20.265 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:14:20.551 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: ece@gmail.com
+2026-10-01 13:14:22.837 +03:00 [INF] Executed DbCommand (55ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:14:23.125 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2c1dfe7c-2ed6-4c05-890d-5377466f9502", Username: ece, Role: "Customer"
+2026-10-01 13:14:23.133 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:14:23.156 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 2882.5097ms
+2026-10-01 13:14:23.159 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:14:23.175 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 3021.688ms
+2026-10-01 13:14:59.011 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Users/2C1DFE7C-2ED6-4C05-890D-5377466F9502 - null null
+2026-10-01 13:14:59.204 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.UsersController.DeleteUser (HotelManagementApi)'
+2026-10-01 13:14:59.229 +03:00 [INF] Route matched with {action = "DeleteUser", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteUser(System.Guid) on controller HotelManagementApi.Controllers.UsersController (HotelManagementApi).
+2026-10-01 13:14:59.324 +03:00 [INF] Executed DbCommand (30ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @id AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:14:59.381 +03:00 [INF] Executed DbCommand (28ms) [Parameters=[@user_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[OwnerId] = @user_Id AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:14:59.549 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType]
+FROM [Rooms] AS [r]
+WHERE 0 = 1
+2026-10-01 13:14:59.596 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[@user_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CheckInDate], [r].[CheckOutDate], [r].[CreatedAt], [r].[GuestCount], [r].[IsDeleted], [r].[PenaltyFee], [r].[RoomId], [r].[Status], [r].[TotalPrice], [r].[UserId]
+FROM [Reservations] AS [r]
+WHERE [r].[UserId] = @user_Id AND [r].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:14:59.625 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Amount], [p].[CreatedAt], [p].[IsDeleted], [p].[ReservationId], [p].[Status], [p].[TransactionType], [p].[UserId]
+FROM [Payments] AS [p]
+WHERE 0 = 1
+2026-10-01 13:14:59.867 +03:00 [INF] Executed DbCommand (20ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Users] SET [IsDeleted] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+2026-10-01 13:14:59.896 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType13`2[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:14:59.908 +03:00 [INF] Executed action HotelManagementApi.Controllers.UsersController.DeleteUser (HotelManagementApi) in 675.4037ms
+2026-10-01 13:14:59.910 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.UsersController.DeleteUser (HotelManagementApi)'
+2026-10-01 13:14:59.912 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Users/2C1DFE7C-2ED6-4C05-890D-5377466F9502 - 200 null application/json; charset=utf-8 900.4312ms
+2026-10-01 13:16:04.244 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/register - application/json 102
+2026-10-01 13:16:04.269 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 13:16:04.301 +03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(HotelManagementApi.DTOs.RegisterDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:16:04.336 +03:00 [INF] Yeni kullanıcı kayıt işlemi başlatıldı. Username: duru, Role: "Customer"
+2026-10-01 13:16:04.537 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@registerDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = @registerDto_Email) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 13:16:04.707 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (Size = 100), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Users] ([Id], [Balance], [CreatedAt], [Email], [PasswordHash], [Role], [Username])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 13:16:04.755 +03:00 [INF] Kullanıcı kaydı başarıyla tamamlandı. UserId: "72815425-d1b6-4140-9e70-cfae7f253610", Username: duru, Role: "Customer"
+2026-10-01 13:16:04.761 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:16:04.767 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi) in 462.5636ms
+2026-10-01 13:16:04.769 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Register (HotelManagementApi)'
+2026-10-01 13:16:04.774 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/register - 200 null application/json; charset=utf-8 530.331ms
+2026-10-01 13:21:45.299 +03:00 [INF] Application is shutting down...
+2026-10-01 13:31:30.764 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 13:31:30.857 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 13:31:30.861 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 13:31:30.862 +03:00 [INF] Hosting environment: Development
+2026-10-01 13:31:30.863 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 13:31:36.341 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 13:31:36.579 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 241.0787ms
+2026-10-01 13:31:36.733 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 13:31:37.089 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 357.3434ms
+2026-10-01 13:31:57.322 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 13:31:57.354 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 13:31:57.448 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:31:57.504 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:31:57.762 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 13:31:59.853 +03:00 [INF] Executed DbCommand (44ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:32:00.102 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 13:32:00.110 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:32:00.123 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 2611.5721ms
+2026-10-01 13:32:00.127 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:32:00.139 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 2816.8844ms
+2026-10-01 13:33:01.435 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 13:33:01.510 +03:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Customer)
+2026-10-01 13:33:01.517 +03:00 [INF] AuthenticationScheme: Bearer was forbidden.
+2026-10-01 13:33:01.519 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 403 0 null 84.6306ms
+2026-10-01 13:33:28.757 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 61
+2026-10-01 13:33:28.773 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:33:28.778 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:33:28.792 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: selenay@gmail.com
+2026-10-01 13:33:28.840 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:33:28.956 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Username: selenay, Role: "Customer"
+2026-10-01 13:33:28.960 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:33:28.967 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 179.3124ms
+2026-10-01 13:33:28.970 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:33:28.973 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 215.5733ms
+2026-10-01 13:34:53.603 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 13:34:53.619 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:34:53.646 +03:00 [INF] Route matched with {action = "PostReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PostReservation(HotelManagementApi.DTOs.CreateReservationDto) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 13:34:53.689 +03:00 [INF] Yeni rezervasyon oluşturma işlemi başlatıldı. RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74"
+2026-10-01 13:34:53.820 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @userId AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:34:54.011 +03:00 [INF] Executed DbCommand (23ms) [Parameters=[@dto_RoomId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @dto_RoomId AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:34:54.121 +03:00 [WRN] Rezervasyon oluşturma başarısız. Geçersiz tarih aralığı. RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74"
+2026-10-01 13:34:54.127 +03:00 [INF] Executing BadRequestObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:34:54.139 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi) in 489.3791ms
+2026-10-01 13:34:54.148 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:34:54.154 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 400 null application/json; charset=utf-8 551.4271ms
+2026-10-01 13:35:04.036 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 13:35:04.052 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:35:04.054 +03:00 [INF] Route matched with {action = "PostReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PostReservation(HotelManagementApi.DTOs.CreateReservationDto) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 13:35:04.058 +03:00 [INF] Yeni rezervasyon oluşturma işlemi başlatıldı. RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74"
+2026-10-01 13:35:04.078 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @userId AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:35:04.096 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@dto_RoomId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @dto_RoomId AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:35:04.148 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@dto_RoomId='?' (DbType = Guid), @dto_CheckInDate='?' (DbType = DateTime2), @dto_CheckOutDate='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Reservations] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit) AND [r].[RoomId] = @dto_RoomId AND [r].[Status] = N'Confirmed' AND @dto_CheckInDate < [r].[CheckOutDate] AND @dto_CheckOutDate > [r].[CheckInDate]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 13:35:04.469 +03:00 [INF] Executed DbCommand (35ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Guid), @p7='?' (Size = 4000), @p8='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p9='?' (DbType = Guid), @p11='?' (DbType = Guid), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Reservations] ([Id], [CheckInDate], [CheckOutDate], [CreatedAt], [GuestCount], [PenaltyFee], [RoomId], [Status], [TotalPrice], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+UPDATE [Users] SET [Balance] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+2026-10-01 13:35:04.529 +03:00 [INF] Rezervasyon başarıyla oluşturuldu. ReservationId: "c303fdec-3913-4df8-b39b-6490f3e4312d", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74", TotalPrice: 2000.00
+2026-10-01 13:35:04.637 +03:00 [INF] Executed DbCommand (25ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 13:35:04.650 +03:00 [INF] Ödeme kaydı başarıyla oluşturuldu. PaymentId: "b3d6701c-7f28-4e5b-9693-e50a4b2220e8", ReservationId: "c303fdec-3913-4df8-b39b-6490f3e4312d", Amount: 2000.00
+2026-10-01 13:35:04.659 +03:00 [INF] Executing CreatedAtActionResult, writing value of type '<>f__AnonymousType7`10[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:35:04.738 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi) in 680.6864ms
+2026-10-01 13:35:04.741 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:35:04.745 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 201 null application/json; charset=utf-8 708.7761ms
+2026-10-01 13:36:29.089 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 13:36:29.099 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:36:29.103 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:36:29.114 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 13:36:29.137 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:36:29.222 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 13:36:29.224 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:36:29.226 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 116.1949ms
+2026-10-01 13:36:29.228 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:36:29.229 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 139.5741ms
+2026-10-01 13:37:27.529 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Rooms/FE78A8D8-4165-4A9E-ADF4-B37E85517E74 - null null
+2026-10-01 13:37:27.544 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.DeleteRoom (HotelManagementApi)'
+2026-10-01 13:37:27.568 +03:00 [INF] Route matched with {action = "DeleteRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteRoom(System.Guid) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 13:37:27.585 +03:00 [INF] Oda soft delete işlemi başlatıldı. RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74"
+2026-10-01 13:37:27.625 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @id AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:37:27.668 +03:00 [INF] Executed DbCommand (20ms) [Parameters=[@room_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CheckInDate], [r].[CheckOutDate], [r].[CreatedAt], [r].[GuestCount], [r].[IsDeleted], [r].[PenaltyFee], [r].[RoomId], [r].[Status], [r].[TotalPrice], [r].[UserId]
+FROM [Reservations] AS [r]
+WHERE [r].[RoomId] = @room_Id AND [r].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:37:27.757 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@reservationIds1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Amount], [p].[CreatedAt], [p].[IsDeleted], [p].[ReservationId], [p].[Status], [p].[TransactionType], [p].[UserId]
+FROM [Payments] AS [p]
+WHERE [p].[ReservationId] = @reservationIds1 AND [p].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:37:27.789 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Boolean), @p3='?' (DbType = Guid), @p2='?' (DbType = Boolean), @p5='?' (DbType = Guid), @p4='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [Payments] SET [IsDeleted] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+UPDATE [Reservations] SET [IsDeleted] = @p2
+OUTPUT 1
+WHERE [Id] = @p3;
+UPDATE [Rooms] SET [IsDeleted] = @p4
+OUTPUT 1
+WHERE [Id] = @p5;
+2026-10-01 13:37:27.798 +03:00 [INF] Oda soft delete işlemi başarıyla tamamlandı. RoomId: "fe78a8d8-4165-4a9e-adf4-b37e85517e74", HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", ReservationCount: 1
+2026-10-01 13:37:27.802 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType11`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:37:27.813 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.DeleteRoom (HotelManagementApi) in 240.4234ms
+2026-10-01 13:37:27.816 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.DeleteRoom (HotelManagementApi)'
+2026-10-01 13:37:27.818 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Rooms/FE78A8D8-4165-4A9E-ADF4-B37E85517E74 - 200 null application/json; charset=utf-8 288.453ms
+2026-10-01 13:46:32.753 +03:00 [INF] Application is shutting down...
+2026-10-01 13:46:45.062 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 13:46:45.150 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 13:46:45.153 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 13:46:45.154 +03:00 [INF] Hosting environment: Development
+2026-10-01 13:46:45.155 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 13:46:56.473 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 13:46:56.609 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 138.563ms
+2026-10-01 13:46:56.839 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 13:46:57.269 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 430.3774ms
+2026-10-01 13:47:19.463 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 61
+2026-10-01 13:47:19.473 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 13:47:19.550 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:47:19.620 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:47:19.872 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: selenay@gmail.com
+2026-10-01 13:47:21.983 +03:00 [INF] Executed DbCommand (121ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:47:22.300 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Username: selenay, Role: "Customer"
+2026-10-01 13:47:22.314 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:47:22.329 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 2701.2403ms
+2026-10-01 13:47:22.331 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:47:22.345 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 2881.7925ms
+2026-10-01 13:48:27.095 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 13:48:27.200 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:48:27.209 +03:00 [INF] Route matched with {action = "PostReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PostReservation(HotelManagementApi.DTOs.CreateReservationDto) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 13:48:27.240 +03:00 [INF] Yeni rezervasyon oluşturma işlemi başlatıldı. RoomId: "595a0274-c044-498f-887a-36bc9bf84d83"
+2026-10-01 13:48:27.306 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @userId AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:48:27.548 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@dto_RoomId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @dto_RoomId AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:48:27.793 +03:00 [INF] Executed DbCommand (44ms) [Parameters=[@dto_RoomId='?' (DbType = Guid), @dto_CheckInDate='?' (DbType = DateTime2), @dto_CheckOutDate='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Reservations] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit) AND [r].[RoomId] = @dto_RoomId AND [r].[Status] = N'Confirmed' AND @dto_CheckInDate < [r].[CheckOutDate] AND @dto_CheckOutDate > [r].[CheckInDate]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 13:48:28.211 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Guid), @p7='?' (Size = 4000), @p8='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p9='?' (DbType = Guid), @p11='?' (DbType = Guid), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Reservations] ([Id], [CheckInDate], [CheckOutDate], [CreatedAt], [GuestCount], [PenaltyFee], [RoomId], [Status], [TotalPrice], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+UPDATE [Users] SET [Balance] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+2026-10-01 13:48:28.243 +03:00 [INF] Rezervasyon başarıyla oluşturuldu. ReservationId: "acb60740-59f5-43c8-998f-2bd88b77f2eb", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", RoomId: "595a0274-c044-498f-887a-36bc9bf84d83", TotalPrice: 4000.00
+2026-10-01 13:48:28.301 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 13:48:28.306 +03:00 [INF] Ödeme kaydı başarıyla oluşturuldu. PaymentId: "0333a29f-174c-4b33-a34a-5b28ac686bb4", ReservationId: "acb60740-59f5-43c8-998f-2bd88b77f2eb", Amount: 4000.00
+2026-10-01 13:48:28.309 +03:00 [INF] Executing CreatedAtActionResult, writing value of type '<>f__AnonymousType7`10[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:48:28.363 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi) in 1150.6991ms
+2026-10-01 13:48:28.367 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:48:28.370 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 201 null application/json; charset=utf-8 1275.4478ms
+2026-10-01 13:49:36.888 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Reservations/ACB60740-59F5-43C8-998F-2BD88B77F2EB - null null
+2026-10-01 13:49:36.902 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.DeleteReservation (HotelManagementApi)'
+2026-10-01 13:49:36.926 +03:00 [INF] Route matched with {action = "DeleteReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteReservation(System.Guid) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 13:49:36.939 +03:00 [INF] Rezervasyon iptal işlemi başlatıldı. ReservationId: "acb60740-59f5-43c8-998f-2bd88b77f2eb"
+2026-10-01 13:49:37.074 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[CheckInDate], [r].[CheckOutDate], [r].[CreatedAt], [r].[GuestCount], [r].[IsDeleted], [r].[PenaltyFee], [r].[RoomId], [r].[Status], [r].[TotalPrice], [r].[UserId], [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Reservations] AS [r]
+INNER JOIN [Users] AS [u] ON [r].[UserId] = [u].[Id]
+WHERE [r].[Id] = @id AND [r].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:49:37.084 +03:00 [INF] İptal ücreti hesaplandı. ReservationId: "acb60740-59f5-43c8-998f-2bd88b77f2eb", RemainingDays: 365, PenaltyFee: 0, RefundAmount: 4000.00
+2026-10-01 13:49:37.119 +03:00 [INF] Executed DbCommand (20ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Guid), @p9='?' (DbType = Guid), @p7='?' (DbType = Boolean), @p8='?' (Size = 4000), @p11='?' (DbType = Guid), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+UPDATE [Reservations] SET [IsDeleted] = @p7, [Status] = @p8
+OUTPUT 1
+WHERE [Id] = @p9;
+UPDATE [Users] SET [Balance] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+2026-10-01 13:49:37.126 +03:00 [INF] Rezervasyon soft delete ile iptal edildi. ReservationId: "acb60740-59f5-43c8-998f-2bd88b77f2eb", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", PenaltyFee: 0, RefundAmount: 4000.00, RefundPaymentId: "f5d61797-409a-4f76-9aa6-d4467b14b0a5"
+2026-10-01 13:49:37.134 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType9`6[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Nullable`1[[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:49:37.155 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.DeleteReservation (HotelManagementApi) in 223.5331ms
+2026-10-01 13:49:37.158 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.DeleteReservation (HotelManagementApi)'
+2026-10-01 13:49:37.162 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Reservations/ACB60740-59F5-43C8-998F-2BD88B77F2EB - 200 null application/json; charset=utf-8 273.9491ms
+2026-10-01 13:49:48.542 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 13:49:48.547 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:49:48.550 +03:00 [INF] Route matched with {action = "PostReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PostReservation(HotelManagementApi.DTOs.CreateReservationDto) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 13:49:48.554 +03:00 [INF] Yeni rezervasyon oluşturma işlemi başlatıldı. RoomId: "595a0274-c044-498f-887a-36bc9bf84d83"
+2026-10-01 13:49:48.569 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @userId AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:49:48.583 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@dto_RoomId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @dto_RoomId AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:49:48.594 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@dto_RoomId='?' (DbType = Guid), @dto_CheckInDate='?' (DbType = DateTime2), @dto_CheckOutDate='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Reservations] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit) AND [r].[RoomId] = @dto_RoomId AND [r].[Status] = N'Confirmed' AND @dto_CheckInDate < [r].[CheckOutDate] AND @dto_CheckOutDate > [r].[CheckInDate]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 13:49:48.610 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Guid), @p7='?' (Size = 4000), @p8='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p9='?' (DbType = Guid), @p11='?' (DbType = Guid), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Reservations] ([Id], [CheckInDate], [CheckOutDate], [CreatedAt], [GuestCount], [PenaltyFee], [RoomId], [Status], [TotalPrice], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+UPDATE [Users] SET [Balance] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+2026-10-01 13:49:48.615 +03:00 [INF] Rezervasyon başarıyla oluşturuldu. ReservationId: "cf787698-0b85-4971-abeb-d5d49ccdeb84", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", RoomId: "595a0274-c044-498f-887a-36bc9bf84d83", TotalPrice: 4000.00
+2026-10-01 13:49:48.628 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 13:49:48.632 +03:00 [INF] Ödeme kaydı başarıyla oluşturuldu. PaymentId: "ac0e3f48-03b0-4fbf-a920-b336530a0992", ReservationId: "cf787698-0b85-4971-abeb-d5d49ccdeb84", Amount: 4000.00
+2026-10-01 13:49:48.638 +03:00 [INF] Executing CreatedAtActionResult, writing value of type '<>f__AnonymousType7`10[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:49:48.643 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi) in 89.6245ms
+2026-10-01 13:49:48.648 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 13:49:48.652 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 201 null application/json; charset=utf-8 110.2281ms
+2026-10-01 13:50:11.865 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Rooms/595A0274-C044-498F-887A-36BC9BF84D83 - null null
+2026-10-01 13:50:11.873 +03:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin|HotelOwner)
+2026-10-01 13:50:11.883 +03:00 [INF] AuthenticationScheme: Bearer was forbidden.
+2026-10-01 13:50:11.888 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Rooms/595A0274-C044-498F-887A-36BC9BF84D83 - 403 0 null 22.7946ms
+2026-10-01 13:50:34.384 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 13:50:34.392 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:50:34.397 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:50:34.400 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 13:50:34.405 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:50:34.568 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 13:50:34.573 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:50:34.578 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 178.8502ms
+2026-10-01 13:50:34.583 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:50:34.586 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 201.5132ms
+2026-10-01 13:50:57.091 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Rooms/595A0274-C044-498F-887A-36BC9BF84D83 - null null
+2026-10-01 13:50:57.094 +03:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin|HotelOwner)
+2026-10-01 13:50:57.098 +03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-10-01 13:50:57.100 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Rooms/595A0274-C044-498F-887A-36BC9BF84D83 - 401 0 null 8.5875ms
+2026-10-01 13:51:35.670 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 13:51:35.674 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:51:35.675 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 13:51:35.680 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 13:51:35.688 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:51:35.795 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 13:51:35.799 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:51:35.803 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 124.3963ms
+2026-10-01 13:51:35.807 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 13:51:35.810 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 139.1515ms
+2026-10-01 13:52:18.398 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Rooms/595A0274-C044-498F-887A-36BC9BF84D83 - null null
+2026-10-01 13:52:18.412 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.DeleteRoom (HotelManagementApi)'
+2026-10-01 13:52:18.429 +03:00 [INF] Route matched with {action = "DeleteRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteRoom(System.Guid) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 13:52:18.449 +03:00 [INF] Oda soft delete ve rezervasyon iade işlemi başlatıldı. RoomId: "595a0274-c044-498f-887a-36bc9bf84d83"
+2026-10-01 13:52:18.506 +03:00 [INF] Executed DbCommand (23ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @id AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:52:18.549 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@room_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CheckInDate], [r].[CheckOutDate], [r].[CreatedAt], [r].[GuestCount], [r].[IsDeleted], [r].[PenaltyFee], [r].[RoomId], [r].[Status], [r].[TotalPrice], [r].[UserId], [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Reservations] AS [r]
+INNER JOIN [Users] AS [u] ON [r].[UserId] = [u].[Id]
+WHERE [r].[RoomId] = @room_Id AND [r].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:52:18.555 +03:00 [INF] Oda silme nedeniyle müşteriye tam iade yapıldı. ReservationId: "cf787698-0b85-4971-abeb-d5d49ccdeb84", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", RefundAmount: 4000.00
+2026-10-01 13:52:18.579 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@reservation_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Amount], [p].[CreatedAt], [p].[IsDeleted], [p].[ReservationId], [p].[Status], [p].[TransactionType], [p].[UserId]
+FROM [Payments] AS [p]
+WHERE [p].[ReservationId] = @reservation_Id AND [p].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 13:52:18.628 +03:00 [INF] Executed DbCommand (22ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Boolean), @p2='?' (DbType = Guid), @p3='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p4='?' (DbType = DateTime2), @p5='?' (DbType = Guid), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = Guid), @p11='?' (DbType = Guid), @p9='?' (DbType = Boolean), @p10='?' (Size = 4000), @p13='?' (DbType = Guid), @p12='?' (DbType = Boolean), @p15='?' (DbType = Guid), @p14='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [Payments] SET [IsDeleted] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p2, @p3, @p4, @p5, @p6, @p7, @p8);
+UPDATE [Reservations] SET [IsDeleted] = @p9, [Status] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+UPDATE [Rooms] SET [IsDeleted] = @p12
+OUTPUT 1
+WHERE [Id] = @p13;
+UPDATE [Users] SET [Balance] = @p14
+OUTPUT 1
+WHERE [Id] = @p15;
+2026-10-01 13:52:18.636 +03:00 [INF] Oda soft delete ve iade işlemi başarıyla tamamlandı. RoomId: "595a0274-c044-498f-887a-36bc9bf84d83", HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", ReservationCount: 1, RefundedReservationCount: 1, TotalRefundAmount: 4000.00
+2026-10-01 13:52:18.641 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType10`6[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 13:52:18.652 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.DeleteRoom (HotelManagementApi) in 221.2768ms
+2026-10-01 13:52:18.657 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.DeleteRoom (HotelManagementApi)'
+2026-10-01 13:52:18.662 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Rooms/595A0274-C044-498F-887A-36BC9BF84D83 - 200 null application/json; charset=utf-8 263.6963ms
+2026-10-01 13:58:37.357 +03:00 [INF] Application is shutting down...
+2026-10-01 13:58:54.830 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 13:58:54.928 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 13:58:54.930 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 13:58:54.931 +03:00 [INF] Hosting environment: Development
+2026-10-01 13:58:54.932 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 13:58:57.976 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 13:58:57.987 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 13:58:58.201 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 233.081ms
+2026-10-01 13:58:58.202 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 217.4543ms
+2026-10-01 13:58:58.422 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 13:58:58.740 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Ambiguous HTTP method for action - HotelManagementApi.Controllers.HotelsController.DeleteHotel (HotelManagementApi). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-10-01 13:58:58.781 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 500 null text/plain; charset=utf-8 358.0659ms
+2026-10-01 13:59:02.840 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 13:59:02.854 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 13.662ms
+2026-10-01 13:59:02.976 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 13:59:03.017 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Ambiguous HTTP method for action - HotelManagementApi.Controllers.HotelsController.DeleteHotel (HotelManagementApi). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-10-01 13:59:03.034 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 500 null text/plain; charset=utf-8 58.161ms
+2026-10-01 14:00:09.021 +03:00 [INF] Application is shutting down...
+2026-10-01 14:00:14.423 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 14:00:14.514 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 14:00:14.517 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 14:00:14.518 +03:00 [INF] Hosting environment: Development
+2026-10-01 14:00:14.519 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 14:00:24.466 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 14:00:24.724 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 261.814ms
+2026-10-01 14:00:24.833 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 14:00:25.147 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 314.8463ms
+2026-10-01 14:02:14.214 +03:00 [INF] Application is shutting down...
+2026-10-01 14:02:19.658 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 14:02:19.770 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 14:02:19.772 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 14:02:19.773 +03:00 [INF] Hosting environment: Development
+2026-10-01 14:02:19.774 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 14:02:24.489 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 14:02:24.658 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 173.8782ms
+2026-10-01 14:02:24.785 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 14:02:25.097 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 313.8369ms
+2026-10-01 14:02:49.494 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 61
+2026-10-01 14:02:49.541 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 14:02:49.626 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 14:02:49.663 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 14:02:50.078 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: selenay@gmail.com
+2026-10-01 14:02:52.354 +03:00 [INF] Executed DbCommand (70ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:02:52.655 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Username: selenay, Role: "Customer"
+2026-10-01 14:02:52.663 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 14:02:52.679 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 3010.7048ms
+2026-10-01 14:02:52.682 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 14:02:52.695 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 3201.6668ms
+2026-10-01 14:04:04.224 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 14:04:04.377 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 14:04:04.397 +03:00 [INF] Route matched with {action = "PostReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PostReservation(HotelManagementApi.DTOs.CreateReservationDto) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 14:04:04.446 +03:00 [INF] Yeni rezervasyon oluşturma işlemi başlatıldı. RoomId: "2ff73c40-005b-4fda-8054-022d472de550"
+2026-10-01 14:04:04.562 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @userId AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:04:04.790 +03:00 [INF] Executed DbCommand (17ms) [Parameters=[@dto_RoomId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @dto_RoomId AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:04:04.970 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@dto_RoomId='?' (DbType = Guid), @dto_CheckInDate='?' (DbType = DateTime2), @dto_CheckOutDate='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Reservations] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit) AND [r].[RoomId] = @dto_RoomId AND [r].[Status] = N'Confirmed' AND @dto_CheckInDate < [r].[CheckOutDate] AND @dto_CheckOutDate > [r].[CheckInDate]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 14:04:05.541 +03:00 [INF] Executed DbCommand (32ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Guid), @p7='?' (Size = 4000), @p8='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p9='?' (DbType = Guid), @p11='?' (DbType = Guid), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Reservations] ([Id], [CheckInDate], [CheckOutDate], [CreatedAt], [GuestCount], [PenaltyFee], [RoomId], [Status], [TotalPrice], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+UPDATE [Users] SET [Balance] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+2026-10-01 14:04:05.643 +03:00 [INF] Rezervasyon başarıyla oluşturuldu. ReservationId: "bd9107d4-09bf-4aab-a662-33b4df1255a9", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", RoomId: "2ff73c40-005b-4fda-8054-022d472de550", TotalPrice: 3000.00
+2026-10-01 14:04:05.743 +03:00 [INF] Executed DbCommand (22ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 14:04:05.753 +03:00 [INF] Ödeme kaydı başarıyla oluşturuldu. PaymentId: "2cdc1dfc-f53d-48b5-8925-c6b5d8c0ba17", ReservationId: "bd9107d4-09bf-4aab-a662-33b4df1255a9", Amount: 3000.00
+2026-10-01 14:04:05.761 +03:00 [INF] Executing CreatedAtActionResult, writing value of type '<>f__AnonymousType7`10[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 14:04:05.859 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi) in 1457.7516ms
+2026-10-01 14:04:05.862 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 14:04:05.866 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 201 null application/json; charset=utf-8 1641.7908ms
+2026-10-01 14:04:47.267 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 14:04:47.301 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 14:04:47.304 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 14:04:47.321 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 14:04:47.534 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:04:47.728 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 14:04:47.731 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 14:04:47.732 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 421.8218ms
+2026-10-01 14:04:47.734 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 14:04:47.736 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 469.1698ms
+2026-10-01 14:05:36.831 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Hotels/A3549464-131D-4D9B-A8BC-A2F200417960 - null null
+2026-10-01 14:05:36.866 +03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenMalformedException: IDX14100: JWT is not well formed, there are no dots (.).
+The token needs to be in JWS or JWE Compact Serialization Format. (JWS): 'EncodedHeader.EncodedPayload.EncodedSignature'. (JWE): 'EncodedProtectedHeader.EncodedEncryptedKey.EncodedInitializationVector.EncodedCiphertext.EncodedAuthenticationTag'.
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString, TryReadJwtClaim tryReadJwtClaim)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2026-10-01 14:05:36.909 +03:00 [INF] Bearer was not authenticated. Failure message: IDX14100: JWT is not well formed, there are no dots (.).
+The token needs to be in JWS or JWE Compact Serialization Format. (JWS): 'EncodedHeader.EncodedPayload.EncodedSignature'. (JWE): 'EncodedProtectedHeader.EncodedEncryptedKey.EncodedInitializationVector.EncodedCiphertext.EncodedAuthenticationTag'.
+2026-10-01 14:05:36.918 +03:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin|HotelOwner)
+2026-10-01 14:05:36.936 +03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-10-01 14:05:36.940 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Hotels/A3549464-131D-4D9B-A8BC-A2F200417960 - 401 0 null 109.1463ms
+2026-10-01 14:06:04.363 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 14:06:04.372 +03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenMalformedException: IDX14100: JWT is not well formed, there are no dots (.).
+The token needs to be in JWS or JWE Compact Serialization Format. (JWS): 'EncodedHeader.EncodedPayload.EncodedSignature'. (JWE): 'EncodedProtectedHeader.EncodedEncryptedKey.EncodedInitializationVector.EncodedCiphertext.EncodedAuthenticationTag'.
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken.ReadToken(ReadOnlyMemory`1 encodedTokenMemory)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebToken..ctor(String jwtEncodedString, TryReadJwtClaim tryReadJwtClaim)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ReadToken(String token, TokenValidationParameters validationParameters)
+2026-10-01 14:06:04.383 +03:00 [INF] Bearer was not authenticated. Failure message: IDX14100: JWT is not well formed, there are no dots (.).
+The token needs to be in JWS or JWE Compact Serialization Format. (JWS): 'EncodedHeader.EncodedPayload.EncodedSignature'. (JWE): 'EncodedProtectedHeader.EncodedEncryptedKey.EncodedInitializationVector.EncodedCiphertext.EncodedAuthenticationTag'.
+2026-10-01 14:06:04.385 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 14:06:04.389 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 14:06:04.393 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 14:06:04.410 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:06:04.539 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 14:06:04.541 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 14:06:04.544 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 153.1127ms
+2026-10-01 14:06:04.547 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 14:06:04.549 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 185.3699ms
+2026-10-01 14:06:55.109 +03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5179/api/Hotels/A3549464-131D-4D9B-A8BC-A2F200417960 - null null
+2026-10-01 14:06:55.118 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.HotelsController.DeleteHotel (HotelManagementApi)'
+2026-10-01 14:06:55.132 +03:00 [INF] Route matched with {action = "DeleteHotel", controller = "Hotels"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteHotel(System.Guid) on controller HotelManagementApi.Controllers.HotelsController (HotelManagementApi).
+2026-10-01 14:06:55.140 +03:00 [INF] Otel soft delete işlemi başlatıldı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960"
+2026-10-01 14:06:55.158 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @id AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:06:55.199 +03:00 [INF] Executed DbCommand (27ms) [Parameters=[@hotel_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType]
+FROM [Rooms] AS [r]
+WHERE [r].[HotelId] = @hotel_Id AND [r].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:06:55.293 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@roomIds1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CheckInDate], [r].[CheckOutDate], [r].[CreatedAt], [r].[GuestCount], [r].[IsDeleted], [r].[PenaltyFee], [r].[RoomId], [r].[Status], [r].[TotalPrice], [r].[UserId], [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Reservations] AS [r]
+INNER JOIN [Users] AS [u] ON [r].[UserId] = [u].[Id]
+WHERE [r].[RoomId] = @roomIds1 AND [r].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:06:55.323 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@reservation_Id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Amount], [p].[CreatedAt], [p].[IsDeleted], [p].[ReservationId], [p].[Status], [p].[TransactionType], [p].[UserId]
+FROM [Payments] AS [p]
+WHERE [p].[ReservationId] = @reservation_Id AND [p].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 14:06:55.383 +03:00 [INF] Executed DbCommand (35ms) [Parameters=[@p1='?' (DbType = Guid), @p0='?' (DbType = Boolean), @p3='?' (DbType = Guid), @p2='?' (DbType = Boolean), @p4='?' (DbType = Guid), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = DateTime2), @p7='?' (DbType = Guid), @p8='?' (Size = 4000), @p9='?' (Size = 4000), @p10='?' (DbType = Guid), @p13='?' (DbType = Guid), @p11='?' (DbType = Boolean), @p12='?' (Size = 4000), @p15='?' (DbType = Guid), @p14='?' (DbType = Boolean), @p17='?' (DbType = Guid), @p16='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [Hotels] SET [IsDeleted] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+UPDATE [Payments] SET [IsDeleted] = @p2
+OUTPUT 1
+WHERE [Id] = @p3;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p4, @p5, @p6, @p7, @p8, @p9, @p10);
+UPDATE [Reservations] SET [IsDeleted] = @p11, [Status] = @p12
+OUTPUT 1
+WHERE [Id] = @p13;
+UPDATE [Rooms] SET [IsDeleted] = @p14
+OUTPUT 1
+WHERE [Id] = @p15;
+UPDATE [Users] SET [Balance] = @p16
+OUTPUT 1
+WHERE [Id] = @p17;
+2026-10-01 14:06:55.389 +03:00 [INF] Otel ve bağlı kayıtlar soft delete edildi ve iadeler yapıldı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960", UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", RoomCount: 1, ReservationCount: 1, RefundCount: 1, TotalRefundAmount: 3000.00
+2026-10-01 14:06:55.394 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 14:06:55.401 +03:00 [INF] Executed action HotelManagementApi.Controllers.HotelsController.DeleteHotel (HotelManagementApi) in 266.1823ms
+2026-10-01 14:06:55.402 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.HotelsController.DeleteHotel (HotelManagementApi)'
+2026-10-01 14:06:55.405 +03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5179/api/Hotels/A3549464-131D-4D9B-A8BC-A2F200417960 - 200 null application/json; charset=utf-8 295.8693ms
+2026-10-01 14:58:10.064 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 14:58:10.122 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 58.9438ms
+2026-10-01 14:58:10.304 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 14:58:10.508 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 204.0111ms
+2026-10-01 14:58:27.999 +03:00 [INF] Application is shutting down...
+2026-10-01 14:58:39.084 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 14:58:39.198 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 14:58:39.202 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 14:58:39.203 +03:00 [INF] Hosting environment: Development
+2026-10-01 14:58:39.204 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 14:58:39.763 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 14:58:40.218 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 458.8895ms
+2026-10-01 14:58:40.478 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 14:58:40.840 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 365.2211ms
+2026-10-01 15:03:15.176 +03:00 [INF] Application is shutting down...
+2026-10-01 15:03:26.216 +03:00 [INF] User profile is available. Using 'C:\Users\selen\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-10-01 15:03:26.389 +03:00 [INF] Now listening on: http://localhost:5179
+2026-10-01 15:03:26.393 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 15:03:26.394 +03:00 [INF] Hosting environment: Development
+2026-10-01 15:03:26.398 +03:00 [INF] Content root path: C:\Projects\HotelManagementApi
+2026-10-01 15:03:28.138 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/index.html - null null
+2026-10-01 15:03:28.219 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/index.html - 200 null text/html;charset=utf-8 82.0222ms
+2026-10-01 15:03:28.349 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - null null
+2026-10-01 15:03:28.549 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 200.0188ms
+2026-10-01 15:04:05.990 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/A3549464-131D-4D9B-A8BC-A2F200417960 - null null
+2026-10-01 15:04:06.025 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-10-01 15:04:06.143 +03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin|HotelOwner)
+2026-10-01 15:04:06.155 +03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-10-01 15:04:06.157 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/A3549464-131D-4D9B-A8BC-A2F200417960 - 401 0 null 167.6405ms
+2026-10-01 15:04:29.096 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 15:04:29.131 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 15:04:29.214 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 15:04:29.567 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 15:04:31.926 +03:00 [INF] Executed DbCommand (68ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:04:32.291 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 15:04:32.298 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 15:04:32.316 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 3093.9229ms
+2026-10-01 15:04:32.322 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 15:04:32.333 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 3237.1542ms
+2026-10-01 15:05:02.640 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/A3549464-131D-4D9B-A8BC-A2F200417960 - null null
+2026-10-01 15:05:02.740 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.GetReservationsByHotel (HotelManagementApi)'
+2026-10-01 15:05:02.753 +03:00 [INF] Route matched with {action = "GetReservationsByHotel", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetReservationsByHotel(System.Guid) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 15:05:02.762 +03:00 [INF] Otele ait rezervasyonları getirme işlemi başlatıldı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960"
+2026-10-01 15:05:02.814 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[@hotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @hotelId AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:05:02.819 +03:00 [WRN] Rezervasyonları istenen otel bulunamadı. HotelId: "a3549464-131d-4d9b-a8bc-a2f200417960"
+2026-10-01 15:05:02.822 +03:00 [INF] Executing NotFoundObjectResult, writing value of type 'System.String'.
+2026-10-01 15:05:02.834 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.GetReservationsByHotel (HotelManagementApi) in 78.876ms
+2026-10-01 15:05:02.838 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.GetReservationsByHotel (HotelManagementApi)'
+2026-10-01 15:05:02.845 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/A3549464-131D-4D9B-A8BC-A2F200417960 - 404 null text/plain; charset=utf-8 204.6876ms
+2026-10-01 15:05:53.468 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Hotels - application/json 123
+2026-10-01 15:05:53.479 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.HotelsController.CreateHotel (HotelManagementApi)'
+2026-10-01 15:05:53.505 +03:00 [INF] Route matched with {action = "CreateHotel", controller = "Hotels"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Hotel]] CreateHotel(HotelManagementApi.DTOs.CreateHotelDto) on controller HotelManagementApi.Controllers.HotelsController (HotelManagementApi).
+2026-10-01 15:05:53.547 +03:00 [INF] Yeni otel oluşturma işlemi başlatıldı. HotelName: Heybeli Otel
+2026-10-01 15:05:53.986 +03:00 [INF] Executed DbCommand (36ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 4000), @p2='?' (Size = 100), @p3='?' (DbType = DateTime2), @p4='?' (Size = 4000), @p5='?' (Size = 150), @p6='?' (DbType = Guid), @p7='?' (Precision = 3) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Hotels] ([Id], [Address], [City], [CreatedAt], [Description], [Name], [OwnerId], [Rating])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 15:05:54.051 +03:00 [INF] Otel başarıyla oluşturuldu. HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", HotelName: Heybeli Otel, OwnerId: "2a560825-253d-4452-a30f-f60c9aa5454a"
+2026-10-01 15:05:54.059 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Hotel'.
+2026-10-01 15:05:54.201 +03:00 [INF] Executed action HotelManagementApi.Controllers.HotelsController.CreateHotel (HotelManagementApi) in 692.7967ms
+2026-10-01 15:05:54.205 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.HotelsController.CreateHotel (HotelManagementApi)'
+2026-10-01 15:05:54.208 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Hotels - 201 null application/json; charset=utf-8 739.5014ms
+2026-10-01 15:06:42.670 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 169
+2026-10-01 15:06:42.685 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 15:06:42.713 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 15:06:42.751 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", RoomNumber: 101
+2026-10-01 15:06:42.788 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:06:42.932 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Size = 4000), @p7='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Rooms] ([Id], [Capacity], [CreatedAt], [HotelId], [IsAvailable], [PricePerNight], [RoomNumber], [RoomType])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 15:06:42.941 +03:00 [INF] Oda başarıyla oluşturuldu. RoomId: "0fc33220-707d-4bc4-b1ca-9b7605d90f18", HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", RoomNumber: 101
+2026-10-01 15:06:42.943 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Room'.
+2026-10-01 15:06:42.955 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 234.1573ms
+2026-10-01 15:06:42.957 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 15:06:42.959 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 201 null application/json; charset=utf-8 293.7705ms
+2026-10-01 15:07:04.995 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 167
+2026-10-01 15:07:05.012 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 15:07:05.018 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 15:07:05.032 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", RoomNumber: 201
+2026-10-01 15:07:05.068 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:07:05.095 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Size = 4000), @p7='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Rooms] ([Id], [Capacity], [CreatedAt], [HotelId], [IsAvailable], [PricePerNight], [RoomNumber], [RoomType])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 15:07:05.105 +03:00 [INF] Oda başarıyla oluşturuldu. RoomId: "084ae487-8669-4c8f-a57d-5db8e9fec7f1", HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", RoomNumber: 201
+2026-10-01 15:07:05.110 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Room'.
+2026-10-01 15:07:05.119 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 89.1735ms
+2026-10-01 15:07:05.123 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 15:07:05.129 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 201 null application/json; charset=utf-8 133.3469ms
+2026-10-01 15:07:29.722 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Rooms - application/json 166
+2026-10-01 15:07:29.731 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 15:07:29.735 +03:00 [INF] Route matched with {action = "PostRoom", controller = "Rooms"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelManagementApi.Models.Room]] PostRoom(HotelManagementApi.DTOs.CreateRoomDto) on controller HotelManagementApi.Controllers.RoomsController (HotelManagementApi).
+2026-10-01 15:07:29.747 +03:00 [INF] Yeni oda oluşturma işlemi başlatıldı. HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", RoomNumber: 301
+2026-10-01 15:07:29.765 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@room_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @room_HotelId AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:07:29.787 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Size = 4000), @p7='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Rooms] ([Id], [Capacity], [CreatedAt], [HotelId], [IsAvailable], [PricePerNight], [RoomNumber], [RoomType])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2026-10-01 15:07:29.796 +03:00 [INF] Oda başarıyla oluşturuldu. RoomId: "1dc722e1-8701-42f6-9554-fa9fd7c69c67", HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", RoomNumber: 301
+2026-10-01 15:07:29.800 +03:00 [INF] Executing CreatedAtActionResult, writing value of type 'HotelManagementApi.Models.Room'.
+2026-10-01 15:07:29.809 +03:00 [INF] Executed action HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi) in 64.0882ms
+2026-10-01 15:07:29.815 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.RoomsController.PostRoom (HotelManagementApi)'
+2026-10-01 15:07:29.822 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Rooms - 201 null application/json; charset=utf-8 99.9935ms
+2026-10-01 15:07:50.149 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 61
+2026-10-01 15:07:50.160 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 15:07:50.165 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 15:07:50.181 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: selenay@gmail.com
+2026-10-01 15:07:50.197 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:07:50.299 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", Username: selenay, Role: "Customer"
+2026-10-01 15:07:50.302 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 15:07:50.304 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 127.5198ms
+2026-10-01 15:07:50.307 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 15:07:50.309 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 160.1281ms
+2026-10-01 15:08:48.222 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Reservations - application/json 164
+2026-10-01 15:08:48.248 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 15:08:48.268 +03:00 [INF] Route matched with {action = "PostReservation", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PostReservation(HotelManagementApi.DTOs.CreateReservationDto) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 15:08:48.298 +03:00 [INF] Yeni rezervasyon oluşturma işlemi başlatıldı. RoomId: "1dc722e1-8701-42f6-9554-fa9fd7c69c67"
+2026-10-01 15:08:48.336 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@userId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @userId AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:08:48.516 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@dto_RoomId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[Id], [r].[Capacity], [r].[CreatedAt], [r].[HotelId], [r].[IsAvailable], [r].[IsDeleted], [r].[PricePerNight], [r].[RoomNumber], [r].[RoomType], [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Rooms] AS [r]
+INNER JOIN [Hotels] AS [h] ON [r].[HotelId] = [h].[Id]
+WHERE [r].[Id] = @dto_RoomId AND [r].[IsDeleted] = CAST(0 AS bit) AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:08:48.639 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[@dto_RoomId='?' (DbType = Guid), @dto_CheckInDate='?' (DbType = DateTime2), @dto_CheckOutDate='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Reservations] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit) AND [r].[RoomId] = @dto_RoomId AND [r].[Status] = N'Confirmed' AND @dto_CheckInDate < [r].[CheckOutDate] AND @dto_CheckOutDate > [r].[CheckInDate]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-10-01 15:08:48.822 +03:00 [INF] Executed DbCommand (21ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Guid), @p7='?' (Size = 4000), @p8='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p9='?' (DbType = Guid), @p11='?' (DbType = Guid), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Reservations] ([Id], [CheckInDate], [CheckOutDate], [CreatedAt], [GuestCount], [PenaltyFee], [RoomId], [Status], [TotalPrice], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+UPDATE [Users] SET [Balance] = @p10
+OUTPUT 1
+WHERE [Id] = @p11;
+2026-10-01 15:08:48.859 +03:00 [INF] Rezervasyon başarıyla oluşturuldu. ReservationId: "d8e82642-3871-499c-be4a-540e739fc047", UserId: "808d656f-cc9f-4213-846e-a3245c5fd17b", RoomId: "1dc722e1-8701-42f6-9554-fa9fd7c69c67", TotalPrice: 8000.00
+2026-10-01 15:08:48.976 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Payments] ([Id], [Amount], [CreatedAt], [ReservationId], [Status], [TransactionType], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-10-01 15:08:48.988 +03:00 [INF] Ödeme kaydı başarıyla oluşturuldu. PaymentId: "2532d9fb-b718-477d-8d0e-a49ee1950846", ReservationId: "d8e82642-3871-499c-be4a-540e739fc047", Amount: 8000.00
+2026-10-01 15:08:48.995 +03:00 [INF] Executing CreatedAtActionResult, writing value of type '<>f__AnonymousType7`10[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 15:08:49.020 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi) in 747.0711ms
+2026-10-01 15:08:49.025 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.PostReservation (HotelManagementApi)'
+2026-10-01 15:08:49.029 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Reservations - 201 null application/json; charset=utf-8 806.4177ms
+2026-10-01 15:09:17.896 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/4DF14B1B-8C24-45FE-B730-DFF94F06E47D - null null
+2026-10-01 15:09:18.553 +03:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin|HotelOwner)
+2026-10-01 15:09:19.091 +03:00 [INF] AuthenticationScheme: Bearer was forbidden.
+2026-10-01 15:09:19.340 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/4DF14B1B-8C24-45FE-B730-DFF94F06E47D - 403 0 null 1443.9512ms
+2026-10-01 15:09:36.601 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5179/api/Auth/login - application/json 59
+2026-10-01 15:09:36.608 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 15:09:36.623 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(HotelManagementApi.DTOs.LoginDto) on controller HotelManagementApi.Controllers.AuthController (HotelManagementApi).
+2026-10-01 15:09:36.628 +03:00 [INF] Kullanıcı giriş denemesi başladı. Email: begum@gmail.com
+2026-10-01 15:09:36.650 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[@loginDto_Email='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Balance], [u].[CreatedAt], [u].[Email], [u].[IsDeleted], [u].[PasswordHash], [u].[Role], [u].[Username]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @loginDto_Email AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:09:36.806 +03:00 [INF] Kullanıcı girişi başarılı. UserId: "2a560825-253d-4452-a30f-f60c9aa5454a", Username: begum, Role: "HotelOwner"
+2026-10-01 15:09:36.807 +03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-10-01 15:09:36.809 +03:00 [INF] Executed action HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi) in 181.6552ms
+2026-10-01 15:09:36.810 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.AuthController.Login (HotelManagementApi)'
+2026-10-01 15:09:36.813 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5179/api/Auth/login - 200 null application/json; charset=utf-8 211.2632ms
+2026-10-01 15:09:58.254 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/4DF14B1B-8C24-45FE-B730-DFF94F06E47D - null null
+2026-10-01 15:09:58.270 +03:00 [INF] Executing endpoint 'HotelManagementApi.Controllers.ReservationsController.GetReservationsByHotel (HotelManagementApi)'
+2026-10-01 15:09:58.275 +03:00 [INF] Route matched with {action = "GetReservationsByHotel", controller = "Reservations"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetReservationsByHotel(System.Guid) on controller HotelManagementApi.Controllers.ReservationsController (HotelManagementApi).
+2026-10-01 15:09:58.286 +03:00 [INF] Otele ait rezervasyonları getirme işlemi başlatıldı. HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d"
+2026-10-01 15:09:58.333 +03:00 [INF] Executed DbCommand (37ms) [Parameters=[@hotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[Id], [h].[Address], [h].[City], [h].[CreatedAt], [h].[Description], [h].[IsDeleted], [h].[Name], [h].[OwnerId], [h].[Rating]
+FROM [Hotels] AS [h]
+WHERE [h].[Id] = @hotelId AND [h].[IsDeleted] = CAST(0 AS bit)
+2026-10-01 15:09:58.402 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[@hotel_Name='?' (Size = 4000), @hotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[UserId], [u].[Username], [r].[RoomId], [r0].[RoomNumber], [r0].[HotelId], @hotel_Name AS [HotelName], [r].[CheckInDate], [r].[CheckOutDate], [r].[GuestCount], [r].[TotalPrice], [r].[PenaltyFee], [r].[Status], [r].[CreatedAt]
+FROM [Reservations] AS [r]
+INNER JOIN [Rooms] AS [r0] ON [r].[RoomId] = [r0].[Id]
+INNER JOIN [Users] AS [u] ON [r].[UserId] = [u].[Id]
+WHERE [r].[IsDeleted] = CAST(0 AS bit) AND [r0].[IsDeleted] = CAST(0 AS bit) AND [r0].[HotelId] = @hotelId
+2026-10-01 15:09:58.408 +03:00 [INF] Otele ait rezervasyonlar getirildi. HotelId: "4df14b1b-8c24-45fe-b730-dff94f06e47d", Rezervasyon sayısı: 1
+2026-10-01 15:09:58.410 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[<>f__AnonymousType6`14[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Decimal, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[HotelManagementApi.Models.ReservationStatus, HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], HotelManagementApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-10-01 15:09:58.424 +03:00 [INF] Executed action HotelManagementApi.Controllers.ReservationsController.GetReservationsByHotel (HotelManagementApi) in 139.6025ms
+2026-10-01 15:09:58.428 +03:00 [INF] Executed endpoint 'HotelManagementApi.Controllers.ReservationsController.GetReservationsByHotel (HotelManagementApi)'
+2026-10-01 15:09:58.433 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5179/api/Reservations/hotel/4DF14B1B-8C24-45FE-B730-DFF94F06E47D - 200 null application/json; charset=utf-8 178.4569ms
+2026-10-01 15:24:55.128 +03:00 [INF] Application is shutting down...
