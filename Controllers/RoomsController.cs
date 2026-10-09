@@ -1,4 +1,3 @@
-
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +15,16 @@ namespace HotelManagementApi.Controllers
     {
         private readonly AppDbContext _context;
         private readonly ILogger<RoomsController> _logger;
+        private readonly IWebHostEnvironment _env;
 
         public RoomsController(
             AppDbContext context,
-            ILogger<RoomsController> logger)
+            ILogger<RoomsController> logger,
+            IWebHostEnvironment env)
         {
             _context = context;
             _logger = logger;
+            _env = env;
         }
 
 
@@ -236,6 +238,37 @@ namespace HotelManagementApi.Controllers
         }
 
 
+        // ==========================================
+        // YENİ: POST /api/Rooms/upload-image
+        // Otel odası için görsel yükleme endpoint'i
+        // ==========================================
+        [HttpPost("upload-image")]
+        [Authorize(Roles = "Admin,HotelOwner")]
+        public async Task<IActionResult> UploadRoomImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "Lütfen geçerli bir görsel dosyası seçin." });
+
+            var uploadsFolder = Path.Combine(_env.WebRootPath ?? Directory.GetCurrentDirectory(), "uploads", "rooms");
+
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var relativeUrl = $"/uploads/rooms/{uniqueFileName}";
+            return Ok(new { url = relativeUrl });
+        }
+
+
         // POST: api/rooms
         // Sadece Admin ve HotelOwner oda oluşturabilir.
         [HttpPost]
@@ -304,6 +337,7 @@ namespace HotelManagementApi.Controllers
                 Capacity = room.Capacity,
                 PricePerNight = room.PricePerNight,
                 IsAvailable = room.IsAvailable,
+                ImageUrl = room.ImageUrl, // <-- Görsel alanı eklendi
                 CreatedAt = DateTime.UtcNow,
                 IsDeleted = false
             };
@@ -343,198 +377,281 @@ namespace HotelManagementApi.Controllers
         }
 
 
+
         // PUT: api/rooms/{id}
-        // Admin her aktif odayı,
-        // HotelOwner sadece kendi otelindeki aktif odayı değiştirebilir.
-                
-            [HttpDelete("{id}")]
-            [Authorize(Roles = "Admin,HotelOwner")]
-            public async Task<IActionResult> DeleteRoom(Guid id)
+        // Sadece Admin ve HotelOwner oda güncelleyebilir.
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,HotelOwner")]
+        public async Task<IActionResult> PutRoom(Guid id, CreateRoomDto roomDto)
+        {
+            _logger.LogInformation(
+                "Oda güncelleme işlemi başlatıldı. RoomId: {RoomId}, HotelId: {HotelId}",
+                id,
+                roomDto.HotelId);
+
+            var existingRoom = await _context.Rooms
+                .Include(r => r.Hotel)
+                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+
+            if (existingRoom == null)
             {
-                _logger.LogInformation(
-                    "Oda soft delete ve rezervasyon iade işlemi başlatıldı. RoomId: {RoomId}",
-                    id);
+                _logger.LogWarning("Güncellenecek oda bulunamadı. RoomId: {RoomId}", id);
+                return NotFound(new { message = "Oda bulunamadı." });
+            }
 
-                // 1. Silinecek aktif odayı ve bağlı oteli bul.
-                var room = await _context.Rooms
-                    .Include(r => r.Hotel)
-                    .FirstOrDefaultAsync(r =>
-                        r.Id == id &&
-                        !r.IsDeleted &&
-                        r.Hotel != null &&
-                        !r.Hotel.IsDeleted);
+            // Yeni bağlanılmak istenen oteli kontrol et
+            var hotel = await _context.Hotels
+                .FirstOrDefaultAsync(h => h.Id == roomDto.HotelId && !h.IsDeleted);
 
-                if (room == null)
+            if (hotel == null)
+            {
+                _logger.LogWarning("Oda güncelleme başarısız. Belirtilen otel bulunamadı. HotelId: {HotelId}", roomDto.HotelId);
+                return BadRequest(new { message = "Belirtilen otel bulunamadı." });
+            }
+
+            // HotelOwner sadece kendi otelindeki odayı güncelleyebilir
+            if (!User.IsInRole("Admin"))
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
+                {
+                    _logger.LogWarning("Oda güncelleme başarısız. Geçersiz token.");
+                    return Unauthorized(new { message = "Geçersiz token." });
+                }
+
+                if (hotel.OwnerId != userId || existingRoom.Hotel?.OwnerId != userId)
                 {
                     _logger.LogWarning(
-                        "Silinecek oda bulunamadı veya zaten silinmiş. RoomId: {RoomId}",
-                        id);
+                        "Yetkisiz oda güncelleme denemesi. RoomId: {RoomId}, UserId: {UserId}",
+                        id,
+                        userId);
 
-                    return NotFound(new
-                    {
-                        message = "Oda bulunamadı."
-                    });
+                    return Forbid();
                 }
+            }
 
-                // 2. HotelOwner sadece kendi otelindeki odayı silebilir.
-                if (!User.IsInRole("Admin"))
+            // Bilgileri güncelle
+            existingRoom.HotelId = roomDto.HotelId;
+            existingRoom.RoomNumber = roomDto.RoomNumber;
+            existingRoom.RoomType = roomDto.RoomType;
+            existingRoom.Capacity = roomDto.Capacity;
+            existingRoom.PricePerNight = roomDto.PricePerNight;
+            existingRoom.IsAvailable = roomDto.IsAvailable;
+            existingRoom.ImageUrl = roomDto.ImageUrl; // <-- Güncellenen görsel alanı eklendi
+
+            _context.Entry(existingRoom).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Oda başarıyla güncellendi. RoomId: {RoomId}", id);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Rooms.Any(e => e.Id == id))
                 {
-                    var userIdClaim =
-                        User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                    if (userIdClaim == null ||
-                        !Guid.TryParse(userIdClaim, out Guid userId))
-                    {
-                        _logger.LogWarning(
-                            "Oda silme başarısız. Geçersiz token. RoomId: {RoomId}",
-                            id);
-
-                        return Unauthorized(new
-                        {
-                            message = "Geçersiz token."
-                        });
-                    }
-
-                    if (room.Hotel?.OwnerId != userId)
-                    {
-                        _logger.LogWarning(
-                            "Yetkisiz oda silme denemesi. RoomId: {RoomId}, UserId: {UserId}, OwnerId: {OwnerId}",
-                            id,
-                            userId,
-                            room.Hotel?.OwnerId);
-
-                        return Forbid();
-                    }
+                    return NotFound(new { message = "Oda bulunamadı." });
                 }
-
-                // 3. Odaya bağlı aktif rezervasyonları,
-                // rezervasyon sahiplerinin kullanıcı bilgileriyle birlikte getir.
-                var reservations = await _context.Reservations
-                    .Include(r => r.User)
-                    .Where(r =>
-                        r.RoomId == room.Id &&
-                        !r.IsDeleted)
-                    .ToListAsync();
-
-                // İade edilen rezervasyon sayısını takip etmek için.
-                int refundedReservationCount = 0;
-
-                // Toplam iade miktarını takip etmek için.
-                decimal totalRefundAmount = 0;
-
-                // 4. Her aktif rezervasyonu iptal et ve TAM iade yap.
-                foreach (var reservation in reservations)
+                else
                 {
-                    // Oda otel tarafından silindiği için
-                    // müşteriye herhangi bir iptal cezası uygulanmaz.
-                    var refundAmount = reservation.TotalPrice;
-
-                    // Ceza sıfırlanır.
-                    reservation.PenaltyFee = 0;
-
-                    // Rezervasyon iptal durumuna getirilir.
-                    reservation.Status = ReservationStatus.Cancelled;
-
-                    // Soft delete.
-                    reservation.IsDeleted = true;
-
-                    // 5. Rezervasyon sahibinin bakiyesine
-                    // rezervasyonun tamamını iade et.
-                    if (reservation.User != null &&
-                        !reservation.User.IsDeleted)
-                    {
-                        reservation.User.Balance += refundAmount;
-
-                        totalRefundAmount += refundAmount;
-                        refundedReservationCount++;
-
-                        _logger.LogInformation(
-                            "Oda silme nedeniyle müşteriye tam iade yapıldı. " +
-                            "ReservationId: {ReservationId}, UserId: {UserId}, RefundAmount: {RefundAmount}",
-                            reservation.Id,
-                            reservation.UserId,
-                            refundAmount);
-                    }
-
-                    // 6. Rezervasyonun mevcut aktif ödeme kayıtlarını bul.
-                    var existingPayments = await _context.Payments
-                        .Where(p =>
-                            p.ReservationId == reservation.Id &&
-                            !p.IsDeleted)
-                        .ToListAsync();
-
-                    // Eski ödeme kayıtlarını soft delete yap.
-                    foreach (var payment in existingPayments)
-                    {
-                        payment.IsDeleted = true;
-                    }
-
-                    // 7. İade işlemi için yeni aktif Payment kaydı oluştur.
-                    var refundPayment = new Payment
-                    {
-                        UserId = reservation.UserId,
-                        ReservationId = reservation.Id,
-                        Amount = refundAmount,
-                        TransactionType = TransactionType.Refund,
-                        Status = PaymentStatus.Refunded,
-                        CreatedAt = DateTime.UtcNow,
-                        IsDeleted = false
-                    };
-
-                    _context.Payments.Add(refundPayment);
+                    throw;
                 }
+            }
 
-                // 8. Odayı soft delete yap.
-                room.IsDeleted = true;
+            return Ok(new { message = "Oda başarıyla güncellendi.", existingRoom });
+        }
 
-                // 9. Tüm değişiklikleri tek seferde kaydet.
-                try
+
+
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,HotelOwner")]
+        public async Task<IActionResult> DeleteRoom(Guid id)
+        {
+            _logger.LogInformation(
+                "Oda soft delete ve rezervasyon iade işlemi başlatıldı. RoomId: {RoomId}",
+                id);
+
+            // 1. Silinecek aktif odayı ve bağlı oteli bul.
+            var room = await _context.Rooms
+                .Include(r => r.Hotel)
+                .FirstOrDefaultAsync(r =>
+                    r.Id == id &&
+                    !r.IsDeleted &&
+                    r.Hotel != null &&
+                    !r.Hotel.IsDeleted);
+
+            if (room == null)
+            {
+                _logger.LogWarning(
+                    "Silinecek oda bulunamadı veya zaten silinmiş. RoomId: {RoomId}",
+                    id);
+
+                return NotFound(new
                 {
-                    await _context.SaveChangesAsync();
-
-                    _logger.LogInformation(
-                        "Oda soft delete ve iade işlemi başarıyla tamamlandı. " +
-                        "RoomId: {RoomId}, HotelId: {HotelId}, ReservationCount: {ReservationCount}, " +
-                        "RefundedReservationCount: {RefundedReservationCount}, TotalRefundAmount: {TotalRefundAmount}",
-                        room.Id,
-                        room.HotelId,
-                        reservations.Count,
-                        refundedReservationCount,
-                        totalRefundAmount);
-                }
-                catch (DbUpdateException ex)
-                {
-                    _logger.LogError(
-                        ex,
-                        "Oda silinirken veya rezervasyon iadeleri yapılırken veritabanı hatası oluştu. " +
-                        "RoomId: {RoomId}, HotelId: {HotelId}",
-                        room.Id,
-                        room.HotelId);
-
-                    return BadRequest(new
-                    {
-                        message =
-                            "Oda silinirken veya rezervasyon iadeleri yapılırken veritabanı hatası oluştu."
-                    });
-                }
-
-                // 10. İşlem sonucunu döndür.
-                return Ok(new
-                {
-                    message =
-                        "Oda başarıyla silindi. Odaya ait rezervasyonlar iptal edildi ve müşterilere tam ödeme iadesi yapıldı.",
-
-                    roomId = room.Id,
-
-                    isDeleted = room.IsDeleted,
-
-                    cancelledReservationCount = reservations.Count,
-
-                    refundedReservationCount = refundedReservationCount,
-
-                    totalRefundAmount = totalRefundAmount
+                    message = "Oda bulunamadı."
                 });
             }
+
+            // 2. HotelOwner sadece kendi otelindeki odayı silebilir.
+            if (!User.IsInRole("Admin"))
+            {
+                var userIdClaim =
+                    User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (userIdClaim == null ||
+                    !Guid.TryParse(userIdClaim, out Guid userId))
+                {
+                    _logger.LogWarning(
+                        "Oda silme başarısız. Geçersiz token. RoomId: {RoomId}",
+                        id);
+
+                    return Unauthorized(new
+                    {
+                        message = "Geçersiz token."
+                    });
+                }
+
+                if (room.Hotel?.OwnerId != userId)
+                {
+                    _logger.LogWarning(
+                        "Yetkisiz oda silme denemesi. RoomId: {RoomId}, UserId: {UserId}, OwnerId: {OwnerId}",
+                        id,
+                        userId,
+                        room.Hotel?.OwnerId);
+
+                    return Forbid();
+                }
+            }
+
+            // 3. Odaya bağlı aktif rezervasyonları,
+            // rezervasyon sahiplerinin kullanıcı bilgileriyle birlikte getir.
+            var reservations = await _context.Reservations
+                .Include(r => r.User)
+                .Where(r =>
+                    r.RoomId == room.Id &&
+                    !r.IsDeleted)
+                .ToListAsync();
+
+            // İade edilen rezervasyon sayısını takip etmek için.
+            int refundedReservationCount = 0;
+
+            // Toplam iade miktarını takip etmek için.
+            decimal totalRefundAmount = 0;
+
+            // 4. Her aktif rezervasyonu iptal et ve TAM iade yap.
+            foreach (var reservation in reservations)
+            {
+                // Oda otel tarafından silindiği için
+                // müşteriye herhangi bir iptal cezası uygulanmaz.
+                var refundAmount = reservation.TotalPrice;
+
+                // Ceza sıfırlanır.
+                reservation.PenaltyFee = 0;
+
+                // Rezervasyon iptal durumuna getirilir.
+                reservation.Status = ReservationStatus.Cancelled;
+
+                // Soft delete.
+                reservation.IsDeleted = true;
+
+                // 5. Rezervasyon sahibinin bakiyesine
+                // rezervasyonun tamamını iade et.
+                if (reservation.User != null &&
+                    !reservation.User.IsDeleted)
+                {
+                    reservation.User.Balance += refundAmount;
+
+                    totalRefundAmount += refundAmount;
+                    refundedReservationCount++;
+
+                    _logger.LogInformation(
+                        "Oda silme nedeniyle müşteriye tam iade yapıldı. " +
+                        "ReservationId: {ReservationId}, UserId: {UserId}, RefundAmount: {RefundAmount}",
+                        reservation.Id,
+                        reservation.UserId,
+                        refundAmount);
+                }
+
+                // 6. Rezervasyonun mevcut aktif ödeme kayıtlarını bul.
+                var existingPayments = await _context.Payments
+                    .Where(p =>
+                        p.ReservationId == reservation.Id &&
+                        !p.IsDeleted)
+                    .ToListAsync();
+
+                // Eski ödeme kayıtlarını soft delete yap.
+                foreach (var payment in existingPayments)
+                {
+                    payment.IsDeleted = true;
+                }
+
+                // 7. İade işlemi için yeni aktif Payment kaydı oluştur.
+                var refundPayment = new Payment
+                {
+                    UserId = reservation.UserId,
+                    ReservationId = reservation.Id,
+                    Amount = refundAmount,
+                    TransactionType = TransactionType.Refund,
+                    Status = PaymentStatus.Refunded,
+                    CreatedAt = DateTime.UtcNow,
+                    IsDeleted = false
+                };
+
+                _context.Payments.Add(refundPayment);
+            }
+
+            // 8. Odayı soft delete yap.
+            room.IsDeleted = true;
+
+            // 9. Tüm değişiklikleri tek seferde kaydet.
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation(
+                    "Oda soft delete ve iade işlemi başarıyla tamamlandı. " +
+                    "RoomId: {RoomId}, HotelId: {HotelId}, ReservationCount: {ReservationCount}, " +
+                    "RefundedReservationCount: {RefundedReservationCount}, TotalRefundAmount: {TotalRefundAmount}",
+                    room.Id,
+                    room.HotelId,
+                    reservations.Count,
+                    refundedReservationCount,
+                    totalRefundAmount);
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Oda silinirken veya rezervasyon iadeleri yapılırken veritabanı hatası oluştu. " +
+                    "RoomId: {RoomId}, HotelId: {HotelId}",
+                    room.Id,
+                    room.HotelId);
+
+                return BadRequest(new
+                {
+                    message =
+                        "Oda silinirken veya rezervasyon iadeleri yapılırken veritabanı hatası oluştu."
+                });
+            }
+
+            // 10. İşlem sonucunu döndür.
+            return Ok(new
+            {
+                message =
+                    "Oda başarıyla silindi. Odaya ait rezervasyonlar iptal edildi ve müşterilere tam ödeme iadesi yapıldı.",
+
+                roomId = room.Id,
+
+                isDeleted = room.IsDeleted,
+
+                cancelledReservationCount = reservations.Count,
+
+                refundedReservationCount = refundedReservationCount,
+
+                totalRefundAmount = totalRefundAmount
+            });
         }
     }
-
+}

@@ -11,6 +11,7 @@ namespace HotelManagementApi.DTOs
         public int Capacity { get; set; }
         public decimal PricePerNight { get; set; }
         public bool IsAvailable { get; set; } = true;
+        public string? ImageUrl { get; set; }
     }
 
     // Oda güncellenirken (istenirse sadece değiştirilmek istenen alanlar gönderilsin diye nullable yapıyoruz)
@@ -21,5 +22,6 @@ namespace HotelManagementApi.DTOs
         public int? Capacity { get; set; }
         public decimal? PricePerNight { get; set; }
         public bool? IsAvailable { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

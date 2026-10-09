@@ -176,3 +176,5 @@ C:\Projects\HotelManagementApi\bin\Debug\net10.0\Serilog.Settings.Configuration.
 C:\Projects\HotelManagementApi\bin\Debug\net10.0\Serilog.Sinks.Console.dll
 C:\Projects\HotelManagementApi\bin\Debug\net10.0\Serilog.Sinks.Debug.dll
 C:\Projects\HotelManagementApi\bin\Debug\net10.0\Serilog.Sinks.File.dll
+C:\Projects\HotelManagementApi\obj\Debug\net10.0\HotelManagementApi.sourcelink.json
+C:\Projects\HotelManagementApi\bin\Debug\net10.0\HotelManagementApi.staticwebassets.runtime.json

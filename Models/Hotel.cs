@@ -31,6 +31,8 @@ namespace HotelManagementApi.Models
 
         public string? Description { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public bool IsDeleted { get; set; } = false;

@@ -120,6 +120,7 @@ namespace HotelManagementApi.Controllers
                 City = hotelDto.City,
                 Rating = hotelDto.Rating,
                 Description = hotelDto.Description,
+                ImageUrl = hotelDto.ImageUrl,
                 OwnerId = userId,
                 CreatedAt = DateTime.UtcNow,
                 IsDeleted = false
@@ -158,6 +159,36 @@ namespace HotelManagementApi.Controllers
                 new { id = hotel.Id },
                 hotel);
         }
+
+        // GET: api/hotels/my-hotels
+        // Giriş yapan otel sahibine (HotelOwner) ait otelleri ve odalarını getirir.
+        [HttpGet("my-hotels")]
+        [Authorize(Roles = "HotelOwner,Admin")]
+        public async Task<ActionResult<IEnumerable<Hotel>>> GetMyHotels()
+        {
+            _logger.LogInformation("Giriş yapan otel sahibinin otellerini listeleme işlemi başlatıldı.");
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
+            {
+                _logger.LogWarning("Otel listeleme başarısız. Geçersiz token.");
+                return Unauthorized(new { message = "Geçersiz token." });
+            }
+
+            var hotels = await _context.Hotels
+                .Where(h => h.OwnerId == userId && !h.IsDeleted)
+                .Include(h => h.Rooms.Where(r => !r.IsDeleted))
+                .ToListAsync();
+
+            _logger.LogInformation("Otel sahibinin otelleri başarıyla getirildi. Otel sayısı: {HotelCount}", hotels.Count);
+
+            return hotels;
+        }
+
+
+
+
 
         // PUT: api/hotels/{id}
         // Mevcut ve silinmemiş otelin bilgilerini günceller.
@@ -237,6 +268,8 @@ namespace HotelManagementApi.Controllers
             if (!string.IsNullOrEmpty(updateDto.Description))
                 hotel.Description = updateDto.Description;
 
+            if (!string.IsNullOrEmpty(updateDto.ImageUrl))
+                hotel.ImageUrl = updateDto.ImageUrl;
             try
             {
                 // Güncellenen bilgiler veritabanına kaydedilir.
@@ -269,6 +302,36 @@ namespace HotelManagementApi.Controllers
                 hotel
             });
         }
+
+
+
+        [HttpPost("upload-image")]
+            public async Task<IActionResult> UploadImage(IFormFile file)
+            {
+                if (file == null || file.Length == 0)
+                    return BadRequest("Lütfen geçerli bir dosya seçin.");
+
+                // wwwroot/uploads/hotels klasörünü hedefliyoruz
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "hotels");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Veritabanına kaydedilecek veya frontende dönecek yol
+                var imageUrl = $"/uploads/hotels/{uniqueFileName}";
+                return Ok(new { url = imageUrl });
+            }
+
+
+
+
 
         // DELETE: api/hotels/{id}
         // Oteli ve ona bağlı kayıtları fiziksel olarak silmez.

@@ -25,6 +25,8 @@ namespace HotelManagementApi.Models
         public int Capacity { get; set; }                  // Kişi kapasitesi
         public decimal PricePerNight { get; set; }          //Fiyatlandırma
         public bool IsAvailable { get; set; } = true;      // Müsaitlik durumu
+
+        public string? ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;      //Soft Delete
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>(); // 1 to N (yani bir odanın birden fazla rezervasyonu olabilir.)

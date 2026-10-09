@@ -21,6 +21,15 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+// CORS AYARLARI (BURAYA EKLENDİ)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 // CONTROLLERS
 builder.Services.AddControllers()
@@ -33,10 +42,8 @@ builder.Services.AddControllers()
             new System.Text.Json.Serialization.JsonStringEnumConverter());
     });
 
-
 // SWAGGER SERVİSLERİ
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc(
@@ -47,21 +54,17 @@ builder.Services.AddSwaggerGen(c =>
             Version = "v1"
         });
 
-    // JWT SWAGGER AYARI
-    // Swagger'a JWT Bearer Authentication seçeneğini ekler.
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description =
             "JWT Authorization header using the Bearer scheme. " +
             "Example: \"Authorization: Bearer {token}\"",
-
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
 
-    // Swagger endpoint'lerinin JWT ile yetkilendirilmesini sağlar.
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -78,19 +81,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 // DATABASE
-// AppDbContext'i Dependency Injection sistemine ekler.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 // TOKEN SERVICE
 builder.Services.AddScoped<TokenService>();
 
 // JWT AUTHENTICATION
-// Uygulamanın JWT Bearer Authentication kullanacağını belirtir.
 builder.Services.AddAuthentication(
     JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -117,41 +116,35 @@ builder.Services.AddAuthentication(
             };
     });
 
-// [Authorize] kullanılan endpoint'lerin
-// yetkilendirme sistemini aktif eder.
 builder.Services.AddAuthorization();
 
-// Yukarıdaki servis ve ayarlarla uygulamayı oluşturur.
 var app = builder.Build();
 
 // SWAGGER
-// Uygulama Development ortamında çalışıyorsa
-// Swagger arayüzünü aktif eder.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-
 // HTTPS
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(); // wwwroot klasöründeki dosyaları dışarıya açar
+app.UseRouting();
+
+// CORS MIDDLEWARE (BURAYA EKLENDİ)
+app.UseCors("AllowAll");
+
 // GLOBAL EXCEPTION MIDDLEWARE
-//Middleware
-// Uygulamada oluşan beklenmeyen hataları
-// merkezi olarak yakalar.
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-
 // AUTHENTICATION & AUTHORIZATION
-// Gelen JWT token'ın geçerli olup olmadığını kontrol eder.
 app.UseAuthentication();
 app.UseAuthorization();
 
 // CONTROLLERS
-// Controller endpoint'lerini uygulamaya bağlar.
 app.MapControllers();
 
-// Uygulamayı çalıştırır ve gelen HTTP isteklerini dinlemeye başlar.
+
 app.Run();

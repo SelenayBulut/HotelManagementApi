@@ -166,29 +166,19 @@ namespace HotelManagementApi.Controllers
         }
 
 
-                
-        // GET: api/reservations/user/{userId}
-        // Belirli bir kullanıcıya ait aktif rezervasyonları getirir.
-        // Sadece Admin ve HotelOwner erişebilir.
+       // GET: api/reservations/user/{userId}
         [HttpGet("user/{userId}")]
-        [Authorize(Roles = "Admin,HotelOwner")]
+        [Authorize(Roles = "Admin,HotelOwner,Customer")]
         public async Task<IActionResult> GetReservationsByUser(Guid userId)
         {
-            _logger.LogInformation(
-                "Kullanıcıya ait rezervasyonları getirme işlemi başlatıldı. UserId: {UserId}",
-                userId);
+            _logger.LogInformation("Kullanıcıya ait rezervasyonlar getiriliyor. UserId: {UserId}", userId);
 
             var reservations = await _context.Reservations
                 .Include(r => r.Room)
                     .ThenInclude(room => room!.Hotel)
                 .Include(r => r.User)
-                .Where(r =>
-                    r.UserId == userId &&
-                    !r.IsDeleted &&
-                    r.Room != null &&
-                    !r.Room.IsDeleted &&
-                    r.Room.Hotel != null &&
-                    !r.Room.Hotel.IsDeleted)
+                // Not: Silinenleri gizlemek istemiyorsan !r.IsDeleted filtresini esnetebilir veya Status'e bırakabilirsin
+                .Where(r => r.UserId == userId && r.Room != null && !r.Room.IsDeleted && r.Room.Hotel != null && !r.Room.Hotel.IsDeleted)
                 .Select(r => new
                 {
                     r.Id,
@@ -203,16 +193,13 @@ namespace HotelManagementApi.Controllers
                     r.GuestCount,
                     r.TotalPrice,
                     r.PenaltyFee,
-                    r.Status,
-                    r.CreatedAt
+                    r.Status, // Confirmed, Cancelled, Completed olarak döner
+                    r.IsDeleted,
+                    r.CreatedAt,
+                    // Eğer Ödeme (Payment) tablon varsa buraya ekleyebilirsin, yoksa statüye göre verebiliriz:
+                    PaymentStatus = r.Status == ReservationStatus.Cancelled ? "Refunded" : "Success" 
                 })
                 .ToListAsync();
-
-            _logger.LogInformation(
-                "UserId'ye göre rezervasyonlar getirildi. " +
-                "UserId: {UserId}, Rezervasyon sayısı: {ReservationCount}",
-                userId,
-                reservations.Count);
 
             return Ok(reservations);
         }
@@ -1082,6 +1069,8 @@ namespace HotelManagementApi.Controllers
                         r.Id == id &&
                         !r.IsDeleted);
 
+            
+
             if (reservation == null)
             {
                 _logger.LogWarning(
@@ -1207,6 +1196,27 @@ namespace HotelManagementApi.Controllers
                     refundAmount;
             }
 
+
+            if (penaltyFee > 0)
+            {
+                var penaltyPayment = new Payment
+                {
+                    UserId = reservation.UserId,
+                    ReservationId = reservation.Id,
+                    Amount = penaltyFee,
+                    TransactionType = TransactionType.Penalty,
+                    Status = PaymentStatus.Success, // Veya projedeki uygun status
+                    CreatedAt = DateTime.UtcNow,
+                    IsDeleted = false
+                };
+
+                _context.Payments.Add(penaltyPayment);
+
+                _logger.LogInformation(
+                    "İptal cezası için ödeme kaydı oluşturuldu. ReservationId: {ReservationId}, PenaltyFee: {PenaltyFee}",
+                    reservation.Id,
+                    penaltyFee);
+            }
             // 10. İade işlemi için payment kaydı oluştur.
             // Bu yeni ödeme kaydı aktif olarak tutulur.
             var refundPayment = new Payment
@@ -1283,6 +1293,54 @@ namespace HotelManagementApi.Controllers
                     refundPayment.Id
             });
         }
-    }
+
+      [HttpGet("dashboard-stats")]
+[Authorize]
+public async Task<IActionResult> GetDashboardStats()
+{
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (userIdClaim == null) return Unauthorized();
+
+    Guid userId = Guid.Parse(userIdClaim);
+    var now = DateTime.Now;
+
+    // 1. Kullanıcının yaklaşan ilk rezervasyonu
+    var nextReservation = await _context.Reservations
+        .Where(r => r.UserId == userId && r.CheckInDate >= now)
+        .OrderBy(r => r.CheckInDate)
+        .Include(r => r.Room)
+            .ThenInclude(room => room.Hotel)
+        .Select(r => new {
+            r.CheckInDate,
+            r.CheckOutDate,
+            r.GuestCount,
+            Name = r.Room.Hotel.Name,
+            City = r.Room.Hotel.City,
+            ImageUrl = r.Room.Hotel.ImageUrl
+        })
+        .FirstOrDefaultAsync();
+
+    // 2. İstatistikler
+    var totalReservations = await _context.Reservations.CountAsync(r => r.UserId == userId);
+    var activeReservations = await _context.Reservations.CountAsync(r => r.UserId == userId && r.CheckOutDate >= now);
+    
+    // 3. Toplam Harcama Hesabı (Rezervasyonlardaki Toplam Fiyatların Toplamı)
+    // Not: Rezervasyon tablonuzdaki fiyat kolonunun adı farklıysa (örn: Price, TotalAmount vb.) burayı ona göre güncelleyebilirsiniz.
+    var totalSpending = await _context.Reservations
+        .Where(r => r.UserId == userId)
+        .SumAsync(r => (decimal?)r.TotalPrice) ?? 0; 
+
+    return Ok(new {
+        stats = new {
+            activeReservations = activeReservations,
+            upcomingCheckIns = await _context.Reservations.CountAsync(r => r.UserId == userId && r.CheckInDate >= now),
+            totalReservations = totalReservations,
+            totalSpending = totalSpending // Dinamik olarak hesaplanan değer
+        },
+        nextReservation = nextReservation
+    });
 }
+            }
+        }
+
 
