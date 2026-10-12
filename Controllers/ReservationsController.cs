@@ -32,18 +32,14 @@ namespace HotelManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReservations()
         {
-            _logger.LogInformation(
-                "Rezervasyonları listeleme işlemi başlatıldı.");
+            _logger.LogInformation("Rezervasyonları listeleme işlemi başlatıldı.");
 
             // JWT token içerisinden kullanıcı ID'sini al.
-            var userIdClaim =
-                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (userIdClaim == null ||
-                !Guid.TryParse(userIdClaim, out Guid userId))
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
             {
-                _logger.LogWarning(
-                    "Rezervasyon listeleme başarısız. Geçersiz token.");
+                _logger.LogWarning("Rezervasyon listeleme başarısız. Geçersiz token.");
 
                 return Unauthorized(new
                 {
@@ -59,22 +55,22 @@ namespace HotelManagementApi.Controllers
                         .ThenInclude(room => room!.Hotel)
                     .Include(r => r.User)
                     .Where(r => !r.IsDeleted)
-                    .Select(r => new
+                    .Select(r => new ReservationDto
                     {
-                        r.Id,
-                        r.UserId,
+                        Id = r.Id,
+                        UserId = r.UserId,
                         Username = r.User!.Username,
-                        r.RoomId,
+                        RoomId = r.RoomId,
                         RoomNumber = r.Room!.RoomNumber,
                         HotelId = r.Room.Hotel!.Id,
                         HotelName = r.Room.Hotel.Name,
-                        r.CheckInDate,
-                        r.CheckOutDate,
-                        r.GuestCount,
-                        r.TotalPrice,
-                        r.PenaltyFee,
-                        r.Status,
-                        r.CreatedAt
+                        CheckInDate = r.CheckInDate,
+                        CheckOutDate = r.CheckOutDate,
+                        GuestCount = r.GuestCount,
+                        TotalPrice = r.TotalPrice,
+                        PenaltyFee = r.PenaltyFee,
+                        Status = r.Status, // Artık ReservationStatus enum türüyle birebir uyuşuyor
+                        CreatedAt = r.CreatedAt
                     })
                     .ToListAsync();
 
@@ -99,22 +95,22 @@ namespace HotelManagementApi.Controllers
                         !r.Room.IsDeleted &&
                         !r.Room.Hotel.IsDeleted &&
                         r.Room.Hotel.OwnerId == userId)
-                    .Select(r => new
+                    .Select(r => new ReservationDto
                     {
-                        r.Id,
-                        r.UserId,
+                        Id = r.Id,
+                        UserId = r.UserId,
                         Username = r.User!.Username,
-                        r.RoomId,
+                        RoomId = r.RoomId,
                         RoomNumber = r.Room!.RoomNumber,
                         HotelId = r.Room.Hotel!.Id,
                         HotelName = r.Room.Hotel.Name,
-                        r.CheckInDate,
-                        r.CheckOutDate,
-                        r.GuestCount,
-                        r.TotalPrice,
-                        r.PenaltyFee,
-                        r.Status,
-                        r.CreatedAt
+                        CheckInDate = r.CheckInDate,
+                        CheckOutDate = r.CheckOutDate,
+                        GuestCount = r.GuestCount,
+                        TotalPrice = r.TotalPrice,
+                        PenaltyFee = r.PenaltyFee,
+                        Status = r.Status,
+                        CreatedAt = r.CreatedAt
                     })
                     .ToListAsync();
 
@@ -138,22 +134,22 @@ namespace HotelManagementApi.Controllers
                     !r.Room.IsDeleted &&
                     r.Room.Hotel != null &&
                     !r.Room.Hotel.IsDeleted)
-                .Select(r => new
+                .Select(r => new ReservationDto
                 {
-                    r.Id,
-                    r.UserId,
+                    Id = r.Id,
+                    UserId = r.UserId,
                     Username = r.User!.Username,
-                    r.RoomId,
+                    RoomId = r.RoomId,
                     RoomNumber = r.Room!.RoomNumber,
                     HotelId = r.Room.Hotel!.Id,
                     HotelName = r.Room.Hotel.Name,
-                    r.CheckInDate,
-                    r.CheckOutDate,
-                    r.GuestCount,
-                    r.TotalPrice,
-                    r.PenaltyFee,
-                    r.Status,
-                    r.CreatedAt
+                    CheckInDate = r.CheckInDate,
+                    CheckOutDate = r.CheckOutDate,
+                    GuestCount = r.GuestCount,
+                    TotalPrice = r.TotalPrice,
+                    PenaltyFee = r.PenaltyFee,
+                    Status = r.Status,
+                    CreatedAt = r.CreatedAt
                 })
                 .ToListAsync();
 
@@ -166,236 +162,192 @@ namespace HotelManagementApi.Controllers
         }
 
 
-       // GET: api/reservations/user/{userId}
-        [HttpGet("user/{userId}")]
-        [Authorize(Roles = "Admin,HotelOwner,Customer")]
-        public async Task<IActionResult> GetReservationsByUser(Guid userId)
+        // GET: api/reservations/{id}
+        // Belirli bir AKTİF rezervasyonun detayını getirir.
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetReservation(Guid id)
         {
-            _logger.LogInformation("Kullanıcıya ait rezervasyonlar getiriliyor. UserId: {UserId}", userId);
+            _logger.LogInformation(
+                "Rezervasyon bilgisi getirme işlemi başlatıldı. ReservationId: {ReservationId}",
+                id);
 
-            var reservations = await _context.Reservations
+            // Rezervasyonu kullanıcı ve oda bilgileriyle birlikte getir.
+            // IsDeleted = true olan rezervasyonlar getirilmez.
+            var reservation = await _context.Reservations
+                .Include(r => r.User)
                 .Include(r => r.Room)
                     .ThenInclude(room => room!.Hotel)
-                .Include(r => r.User)
-                // Not: Silinenleri gizlemek istemiyorsan !r.IsDeleted filtresini esnetebilir veya Status'e bırakabilirsin
-                .Where(r => r.UserId == userId && r.Room != null && !r.Room.IsDeleted && r.Room.Hotel != null && !r.Room.Hotel.IsDeleted)
-                .Select(r => new
+                .FirstOrDefaultAsync(r =>
+                    r.Id == id &&
+                    !r.IsDeleted);
+
+            if (reservation == null)
+            {
+                _logger.LogWarning(
+                    "Rezervasyon bulunamadı veya silinmiş durumda. ReservationId: {ReservationId}",
+                    id);
+
+                return NotFound(new
                 {
-                    r.Id,
-                    r.UserId,
-                    Username = r.User!.Username,
-                    r.RoomId,
-                    RoomNumber = r.Room!.RoomNumber,
-                    HotelId = r.Room.Hotel!.Id,
-                    HotelName = r.Room.Hotel.Name,
-                    r.CheckInDate,
-                    r.CheckOutDate,
-                    r.GuestCount,
-                    r.TotalPrice,
-                    r.PenaltyFee,
-                    r.Status, // Confirmed, Cancelled, Completed olarak döner
-                    r.IsDeleted,
-                    r.CreatedAt,
-                    // Eğer Ödeme (Payment) tablon varsa buraya ekleyebilirsin, yoksa statüye göre verebiliriz:
-                    PaymentStatus = r.Status == ReservationStatus.Cancelled ? "Refunded" : "Success" 
-                })
-                .ToListAsync();
+                    message = "Rezervasyon bulunamadı."
+                });
+            }
 
-            return Ok(reservations);
-        }
+            var userIdClaim =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            if (userIdClaim == null ||
+                !Guid.TryParse(userIdClaim, out Guid userId))
+            {
+                _logger.LogWarning(
+                    "Rezervasyon görüntüleme başarısız. Geçersiz token. ReservationId: {ReservationId}",
+                    id);
 
-                // GET: api/reservations/{id}
-                // Belirli bir AKTİF rezervasyonun detayını getirir.
-                [HttpGet("{id}")]
-                public async Task<IActionResult> GetReservation(Guid id)
+                return Unauthorized(new
                 {
-                    _logger.LogInformation(
-                        "Rezervasyon bilgisi getirme işlemi başlatıldı. ReservationId: {ReservationId}",
-                        id);
+                    message = "Geçersiz token."
+                });
+            }
 
-                    // Rezervasyonu kullanıcı ve oda bilgileriyle birlikte getir.
-                    // IsDeleted = true olan rezervasyonlar getirilmez.
-                    var reservation = await _context.Reservations
-                        .Include(r => r.User)
-                        .Include(r => r.Room)
-                            .ThenInclude(room => room!.Hotel)
-                        .FirstOrDefaultAsync(r =>
-                            r.Id == id &&
-                            !r.IsDeleted);
-
-                    if (reservation == null)
-                    {
-                        _logger.LogWarning(
-                            "Rezervasyon bulunamadı veya silinmiş durumda. ReservationId: {ReservationId}",
-                            id);
-
-                        return NotFound(new
-                        {
-                            message = "Rezervasyon bulunamadı."
-                        });
-                    }
-
-                    var userIdClaim =
-                        User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                    if (userIdClaim == null ||
-                        !Guid.TryParse(userIdClaim, out Guid userId))
-                    {
-                        _logger.LogWarning(
-                            "Rezervasyon görüntüleme başarısız. Geçersiz token. ReservationId: {ReservationId}",
-                            id);
-
-                        return Unauthorized(new
-                        {
-                            message = "Geçersiz token."
-                        });
-                    }
-
-                    if (User.IsInRole("Admin"))
-                    {
-                        // Admin bütün aktif rezervasyonları görebilir.
-                    }
-                    // HotelOwner sadece kendi otellerinin aktif rezervasyonlarını görebilir.
-                    else if (User.IsInRole("HotelOwner"))
-                    {
-                        if (reservation.Room?.Hotel?.OwnerId != userId)
-                        {
-                            _logger.LogWarning(
-                                "HotelOwner yetkisiz rezervasyon görüntüleme denemesi. ReservationId: {ReservationId}, UserId: {UserId}",
-                                id,
-                                userId);
-
-                            return Forbid();
-                        }
-                    }
-                    // Customer sadece kendi aktif rezervasyonunu görebilir.
-                    else
-                    {
-                        if (reservation.UserId != userId)
-                        {
-                            _logger.LogWarning(
-                                "Customer başka kullanıcıya ait rezervasyonu görüntülemeye çalıştı. ReservationId: {ReservationId}, UserId: {UserId}",
-                                id,
-                                userId);
-
-                            return Forbid();
-                        }
-                    }
-
-                    _logger.LogInformation(
-                        "Rezervasyon başarıyla getirildi. ReservationId: {ReservationId}, UserId: {UserId}",
+            if (User.IsInRole("Admin"))
+            {
+                // Admin bütün aktif rezervasyonları görebilir.
+            }
+            // HotelOwner sadece kendi otellerinin aktif rezervasyonlarını görebilir.
+            else if (User.IsInRole("HotelOwner"))
+            {
+                if (reservation.Room?.Hotel?.OwnerId != userId)
+                {
+                    _logger.LogWarning(
+                        "HotelOwner yetkisiz rezervasyon görüntüleme denemesi. ReservationId: {ReservationId}, UserId: {UserId}",
                         id,
                         userId);
 
-                    // Gereksiz navigation alanlarını response'a dahil etme.
-                    return Ok(new
-                    {
-                        reservation.Id,
-                        reservation.UserId,
-                        Username = reservation.User?.Username,
-                        reservation.RoomId,
-                        RoomNumber = reservation.Room?.RoomNumber,
-                        HotelId = reservation.Room?.Hotel?.Id,
-                        HotelName = reservation.Room?.Hotel?.Name,
-                        reservation.CheckInDate,
-                        reservation.CheckOutDate,
-                        reservation.GuestCount,
-                        reservation.TotalPrice,
-                        reservation.PenaltyFee,
-                        reservation.Status,
-                        reservation.CreatedAt
-                    });
+                    return Forbid();
                 }
-
-        
-            // GET: api/Reservations/hotel/{hotelId}
-            // Belirli bir otele ait aktif rezervasyonları getirir.
-            // Admin tüm otelleri görebilir.
-            // HotelOwner sadece kendi otelinin rezervasyonlarını görebilir.
-            [HttpGet("hotel/{hotelId}")]
-            [Authorize(Roles = "Admin,HotelOwner")]
-            public async Task<IActionResult> GetReservationsByHotel(Guid hotelId)
+            }
+            // Customer sadece kendi aktif rezervasyonunu görebilir.
+            else
             {
-                _logger.LogInformation(
-                    "Otele ait rezervasyonları getirme işlemi başlatıldı. HotelId: {HotelId}",
-                    hotelId);
-
-                // Oteli kontrol et
-                var hotel = await _context.Hotels
-                    .FirstOrDefaultAsync(h => h.Id == hotelId && !h.IsDeleted);
-
-                if (hotel == null)
+                if (reservation.UserId != userId)
                 {
                     _logger.LogWarning(
-                        "Rezervasyonları istenen otel bulunamadı. HotelId: {HotelId}",
-                        hotelId);
-
-                    return NotFound("Otel bulunamadı.");
-                }
-
-                // Token'daki kullanıcı ID'sini al
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                if (string.IsNullOrEmpty(userIdClaim) ||
-                    !Guid.TryParse(userIdClaim, out Guid currentUserId))
-                {
-                    return Unauthorized("Kullanıcı kimliği alınamadı.");
-                }
-
-                // HotelOwner sadece kendi otelinin rezervasyonlarını görebilir
-                if (User.IsInRole("HotelOwner") && hotel.OwnerId != currentUserId)
-                {
-                    _logger.LogWarning(
-                        "HotelOwner başka bir otele ait rezervasyonlara erişmeye çalıştı. " +
-                        "UserId: {UserId}, HotelId: {HotelId}",
-                        currentUserId,
-                        hotelId);
+                        "Customer başka kullanıcıya ait rezervasyonu görüntülemeye çalıştı. ReservationId: {ReservationId}, UserId: {UserId}",
+                        id,
+                        userId);
 
                     return Forbid();
                 }
-
-                var reservations = await _context.Reservations
-                    .Include(r => r.User)
-                    .Include(r => r.Room)
-                    .Where(r =>
-                        !r.IsDeleted &&
-                        r.Room != null &&
-                        !r.Room.IsDeleted &&
-                        r.Room.HotelId == hotelId)
-                    .Select(r => new
-                    {
-                        r.Id,
-
-                        r.UserId,
-                        Username = r.User!.Username,
-
-                        r.RoomId,
-                        RoomNumber = r.Room!.RoomNumber,
-
-                        HotelId = r.Room.HotelId,
-                        HotelName = hotel.Name,
-
-                        r.CheckInDate,
-                        r.CheckOutDate,
-                        r.GuestCount,
-                        r.TotalPrice,
-                        r.PenaltyFee,
-                        r.Status,
-                        r.CreatedAt
-                    })
-                    .ToListAsync();
-
-                _logger.LogInformation(
-                    "Otele ait rezervasyonlar getirildi. " +
-                    "HotelId: {HotelId}, Rezervasyon sayısı: {ReservationCount}",
-                    hotelId,
-                    reservations.Count);
-
-                return Ok(reservations);
             }
 
+            _logger.LogInformation(
+                "Rezervasyon başarıyla getirildi. ReservationId: {ReservationId}, UserId: {UserId}",
+                id,
+                userId);
 
+            // Anonim tip yerine ReservationDto kullanıyoruz.
+            var reservationDto = new ReservationDto
+            {
+                Id = reservation.Id,
+                UserId = reservation.UserId,
+                Username = reservation.User?.Username ?? string.Empty,
+                RoomId = reservation.RoomId,
+                RoomNumber = reservation.Room?.RoomNumber ?? string.Empty,
+                HotelId = reservation.Room?.Hotel?.Id ?? Guid.Empty,
+                HotelName = reservation.Room?.Hotel?.Name ?? string.Empty,
+                CheckInDate = reservation.CheckInDate,
+                CheckOutDate = reservation.CheckOutDate,
+                GuestCount = reservation.GuestCount,
+                TotalPrice = reservation.TotalPrice,
+                PenaltyFee = reservation.PenaltyFee,
+                Status = reservation.Status,
+                CreatedAt = reservation.CreatedAt
+            };
+
+            return Ok(reservationDto);
+        }
+
+        
+        // GET: api/Reservations/hotel/{hotelId}
+        // Belirli bir otele ait aktif rezervasyonları getirir.
+        // Admin tüm otelleri görebilir.
+        // HotelOwner sadece kendi otelinin rezervasyonlarını görebilir.
+        [HttpGet("hotel/{hotelId}")]
+        [Authorize(Roles = "Admin,HotelOwner")]
+        public async Task<IActionResult> GetReservationsByHotel(Guid hotelId)
+        {
+            _logger.LogInformation(
+                "Otele ait rezervasyonları getirme işlemi başlatıldı. HotelId: {HotelId}",
+                hotelId);
+
+            // Oteli kontrol et
+            var hotel = await _context.Hotels
+                .FirstOrDefaultAsync(h => h.Id == hotelId && !h.IsDeleted);
+
+            if (hotel == null)
+            {
+                _logger.LogWarning(
+                    "Rezervasyonları istenen otel bulunamadı. HotelId: {HotelId}",
+                    hotelId);
+
+                return NotFound("Otel bulunamadı.");
+            }
+
+            // Token'daki kullanıcı ID'sini al
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) ||
+                !Guid.TryParse(userIdClaim, out Guid currentUserId))
+            {
+                return Unauthorized("Kullanıcı kimliği alınamadı.");
+            }
+
+            // HotelOwner sadece kendi otelinin rezervasyonlarını görebilir
+            if (User.IsInRole("HotelOwner") && hotel.OwnerId != currentUserId)
+            {
+                _logger.LogWarning(
+                    "HotelOwner başka bir otele ait rezervasyonlara erişmeye çalıştı. " +
+                    "UserId: {UserId}, HotelId: {HotelId}",
+                    currentUserId,
+                    hotelId);
+
+                return Forbid();
+            }
+
+            var reservations = await _context.Reservations
+                .Include(r => r.User)
+                .Include(r => r.Room)
+                .Where(r =>
+                    !r.IsDeleted &&
+                    r.Room != null &&
+                    !r.Room.IsDeleted &&
+                    r.Room.HotelId == hotelId)
+                .Select(r => new ReservationDto
+                {
+                    Id = r.Id,
+                    UserId = r.UserId,
+                    Username = r.User!.Username,
+                    RoomId = r.RoomId,
+                    RoomNumber = r.Room!.RoomNumber,
+                    HotelId = r.Room.HotelId,
+                    HotelName = hotel.Name, // Yukarıda çektiğimiz hotel nesnesinden alıyoruz
+                    CheckInDate = r.CheckInDate,
+                    CheckOutDate = r.CheckOutDate,
+                    GuestCount = r.GuestCount,
+                    TotalPrice = r.TotalPrice,
+                    PenaltyFee = r.PenaltyFee,
+                    Status = r.Status, // Enum türü doğrudan eşleşiyor
+                    CreatedAt = r.CreatedAt
+                })
+                .ToListAsync();
+
+            _logger.LogInformation(
+                "Otele ait rezervasyonlar getirildi. " +
+                "HotelId: {HotelId}, Rezervasyon sayısı: {ReservationCount}",
+                hotelId,
+                reservations.Count);
+            return Ok(reservations);
+        }
 
 
 
